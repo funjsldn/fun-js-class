@@ -43,3 +43,21 @@ body {
   padding: 0.5em;
   max-height: none;
 }
+
+.gallary img, .gallary .item {
+  float: left;
+  margin: 0.5rem;
+}
+
+.reveal a {
+  color: #fff;
+}
+.reveal .front .spaced {
+  margin-top: 2rem;
+  text-align: left;
+}
+.reveal .front a {
+  font-size: 3rem;
+  line-height: 1.25em;
+  display: block;
+}
