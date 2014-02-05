@@ -19,3 +19,11 @@ function every(xs, fn){
     else return true;
   }
 }
+
+function mapValues(obj, fn){
+  var result = {};
+  _.each(obj, function(prop, key, obj){
+    return result[key] = fn(prop);
+  });
+  return result;
+}
