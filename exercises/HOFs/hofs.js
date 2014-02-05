@@ -9,3 +9,13 @@ function reject(xs, fn){
   }
   return rejected;
 }
+
+function every(xs, fn){
+  for (var i = 0; i < xs.length; i++) {
+    var x = xs[i];
+    fn = fn || function(y){ return !!y; };
+    
+    if (!fn(x)) return false;
+    else return true;
+  }
+}
