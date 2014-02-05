@@ -22,8 +22,16 @@ function every(xs, fn){
 
 function mapValues(obj, fn){
   var result = {};
-  _.each(obj, function(prop, key, obj){
+  _.each(obj, function(prop, key){
     return result[key] = fn(prop);
+  });
+  return result;
+}
+
+function findKey(obj, fn){
+  var result;
+  _.each(obj, function(prop, key){
+    if (fn(prop)) result = key;
   });
   return result;
 }

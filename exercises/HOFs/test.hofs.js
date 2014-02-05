@@ -76,4 +76,28 @@ suite('Underscore methods', function(){
       assert.deepEqual(plurals, {'a': 'houses', 'b': 'cats', 'c': 'monkeys'});
     });
   });
+
+  suite('findKey', function(){
+    var findTeen;
+    
+    setup(function() {
+      var children = {
+        'Martha': 27,
+        'Paul': 45,
+        'Richard': 16
+      };
+      
+      findTeen = findKey(children, function(child){
+        return child < 20;
+      });
+    });
+
+    test('should return a string', function(){
+      assert.isString(findTeen, "Check return type of findKey");
+    });
+
+    test('should return first child under 20', function(){
+      assert.equal(findTeen, "Richard");
+    });
+  });
 });
