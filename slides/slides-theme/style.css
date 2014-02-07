@@ -48,6 +48,9 @@ body {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+.reveal pre {
+    width: 100% !important;
+}
 
 .center {
     text-align: center !important;
