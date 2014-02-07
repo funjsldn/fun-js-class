@@ -9,10 +9,7 @@
 
   <link rel="stylesheet" href="slides-theme/style.css">
   <link rel="stylesheet" href="slides-theme/talk-specific.css">
-
   <link rel="stylesheet" href="diagrams.css">
-
-  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -29,22 +26,24 @@
 
             [@timruffles](http://twitter.com/timruffles)
             [@mattfieldy](http://twitter.com/mattfieldy)
+            
+          </div>
 
-</script></section>
+      </script></section>
 
-<section data-markdown ><script type="text/template">
-# Hello
+      <section data-markdown ><script type="text/template">
+          # Hello
 
-- [github.com/funjsldn/fun-js-class](https://github.com/funjsldn/fun-js-class)
-- Code + slides up above - clone if you've got `git`, or grab the `.zip`.
-- `slides`
-- `exercises`
+          - [github.com/funjsldn/fun-js-class](https://github.com/funjsldn/fun-js-class)
+          - Code + slides up above - clone if you've got `git`, or grab the `.zip`.
+          - `slides`
+          - `exercises`
 
-</script></section>
+      </script></section>
 
-<section data-markdown ><script type="text/template">
-# What is FP?
-</script></section>
+      <section data-markdown ><script type="text/template">
+          # What is FP?
+      </script></section>
 
 <section data-markdown ><script type="text/template">
 
@@ -371,19 +370,102 @@
       </section>
 
       <section data-markdown>
-        # Your turn!
+        # Your turn
+
+        ## Implementing Underscore
       </section>
 
+      <section data-markdown>
+        # Combinators
+        
+        * What are they?
+        * How do they work?
+        * Why would we use them?
+      </section>
 
+      <section data-markdown>
+        > A combinator is a higher-order function that uses only function application
+        and previously-defined combinators to define a result from its arguments.
 
-<section data-markdown ><script type="text/template">
+        ### In other words:
 
-# Any other questions?
+        > Combinators are pure functions that act on other functions to produce functions.
+      </section>
+      
+      <section>
+        <h2>Interlude - A Brief History</h2>
 
+        <h2>1930s</h2>
+        <br/>
+        <div class="fragment">
+          <h3 class="center">Alonzo Church</h3>
+          <br/>
+          <img src="./img/church.jpg" height="350">
+        </div>
+      </section>
+      
+      <section>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <img src="./img/lambda.png">
+        <aside class="notes">
+          * Foundations of computer science
+          * Probably most famous for serving as basis of Lisp, invented by John
+          McCarthy in 1958
+        </aside>
+      </section>
 
-## @timruffles, @mattfieldy
+      <section>
+        <h2>Lambda Calculus</h2>
+        <br/>
+        <ul>
+          <li>Formal systems in mathmatical logic and computer science for expression computation using only:</li>
+          <ul>
+            <li>function abstraction</li>
+            <li>function application</li>
+          </ul>
+        </ul>
+        <pre><code class="javascript">
+            // Abstraction - (&#955;x.x)
+            function(x){ return x };
 
-</script></section>
+            // Application - (ƒ x)
+            (function(x){ return x })(y);
+        </code></pre>
+      </section>
+        
+      <section>
+        <pre><code class="javascript">
+          // Functions that return functions
+          // &#955;x.&#955;y.x + y
+          function(x){
+            return function(y){
+              return x + y;
+            }
+          }
+
+          // Functions that take functions as input
+          // &#955;(&#955).&#955;x.(fn x)
+          function(fn){
+            return function(x){
+              return fn(x);
+            }
+          }
+        </code></pre>
+        <br/>
+        <h2 class="fragment center">Look familiar?</h2>
+        <br/>
+        <p class="fragment center">First-class functions & higher-order functions</p>
+      </section>
+
+      <section data-markdown ><script type="text/template">
+          # Any other questions?
+
+          ### [@timruffles](http://twitter.com/timruffles)
+          ### [@mattfieldy](http://twitter.com/mattfieldy)
+      </script></section>
 
 
 </div>

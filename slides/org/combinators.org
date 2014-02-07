@@ -1,0 +1,14 @@
+#+TITLE: Combinators
+#+AUTHOR: Matt Field
+#+DATE: <2014-02-07 Fri>
+
+* Combinators (25 minutes)
+
+** What are they?
+
+** How do they work?
+
+** Why would we use them?
+  
+** Familiar examples
+

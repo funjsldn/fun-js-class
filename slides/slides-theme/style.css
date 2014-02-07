@@ -43,6 +43,15 @@ body {
   padding: 0.5em;
   max-height: none;
 }
+.reveal blockquote {
+    padding: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.center {
+    text-align: center !important;
+}
 
 .gallary img, .gallary .item {
   float: left;
