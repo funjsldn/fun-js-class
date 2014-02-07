@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="reveal/lib/css/github.css">
 
   <link rel="stylesheet" href="slides-theme/style.css">
+  <link rel="stylesheet" href="slides-theme/talk-specific.css">
+
+  <link rel="stylesheet" href="diagrams.css">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -26,17 +30,29 @@
             [@timruffles](http://twitter.com/timruffles)
             [@mattfieldy](http://twitter.com/mattfieldy)
 
-      </script></section>
+</script></section>
 
-      <section data-markdown ><script type="text/template">
-          # Hello
+<section data-markdown ><script type="text/template">
+# Hello
 
-          - [github.com/funjsldn/fun-js-class](https://github.com/funjsldn/fun-js-class)
-          - Code + slides up above - clone if you've got `git`, or grab the `.zip`.
-          - `slides`
-          - `exercises`
+- [github.com/funjsldn/fun-js-class](https://github.com/funjsldn/fun-js-class)
+- Code + slides up above - clone if you've got `git`, or grab the `.zip`.
+- `slides`
+- `exercises`
 
-      </script></section>
+</script></section>
+
+<section data-markdown ><script type="text/template">
+# What is FP?
+</script></section>
+
+<section data-markdown ><script type="text/template">
+
+- Passing functions to functions
+- Conciousness of sharing things that change
+- Separation of 'do something' and 'transforms data' code
+
+</script></section>
 
       <section data-markdown ><script type="text/template">
           # Higher-Order Functions
@@ -357,67 +373,76 @@
       <section data-markdown>
         # Your turn!
       </section>
-      
-      <section data-markdown ><script type="text/template">
-          # Any other questions?
 
-          ## @timruffles, @mattfieldy
-      </script></section>
 
-      </div>
-    </div>
 
-    <!-- reveal -->
-    <script src="reveal/lib/js/head.min.js"></script>
-    <script src="reveal/js/reveal.min.js"></script>
-    <script>
-      Reveal.initialize({
+<section data-markdown ><script type="text/template">
 
-      // Display controls in the bottom right corner
-      controls: false,
+# Any other questions?
 
-      // Display a presentation progress bar
-      progress: true,
 
-      // Push each slide change to the browser history
-      history: true,
+## @timruffles, @mattfieldy
 
-      // Enable keyboard shortcuts for navigation
-      keyboard: true,
+</script></section>
 
-      // Enable the slide overview mode
-      overview: true,
 
-      // Vertical centering of slides
-      center: false,
+</div>
+</div>
 
-      // Loop the presentation
-      loop: false,
+<script src="js/d3.js"></script>
+<script src="js/diagrams.js"></script>
 
-      // Change the presentation direction to be RTL
-      rtl: false,
+<!-- reveal -->
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
 
-      // Number of milliseconds between automatically proceeding to the
-      // next slide, disabled when set to 0, this value can be overwritten
-      // by using a data-autoslide attribute on your slides
-      autoSlide: 0,
+    // Display controls in the bottom right corner
+    controls: false,
 
-      // Enable slide navigation via mouse wheel
-      mouseWheel: false,
+    // Display a presentation progress bar
+    progress: true,
 
-      // Apply a 3D roll to links on hover
-      rollingLinks: false,
+    // Push each slide change to the browser history
+    history: true,
 
-      // Transition style
-      transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
+    // Enable keyboard shortcuts for navigation
+    keyboard: true,
 
-      dependencies: [
-      // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
-      { src: 'reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    // Enable the slide overview mode
+    overview: true,
 
-      // Interreveal/pret Markdown in <section> elements
-        { src: 'reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-        { src: 'reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    // Vertical centering of slides
+    center: false,
+
+    // Loop the presentation
+    loop: false,
+
+    // Change the presentation direction to be RTL
+    rtl: false,
+
+    // Number of milliseconds between automatically proceeding to the
+    // next slide, disabled when set to 0, this value can be overwritten
+    // by using a data-autoslide attribute on your slides
+    autoSlide: 0,
+
+    // Enable slide navigation via mouse wheel
+    mouseWheel: false,
+
+    // Apply a 3D roll to links on hover
+    rollingLinks: false,
+
+    // Transition style
+    transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+    dependencies: [
+        // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+        { src: 'reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+        // Interreveal/pret Markdown in <section> elements
+    { src: 'reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 
         // Syntareveal/x highlight for <code> elements
           { src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
