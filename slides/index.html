@@ -410,6 +410,10 @@
           <br/>
           <img src="./img/church.jpg" height="350">
         </div>
+        <aside class="notes">
+          * American mathematician and logician
+          * Major contributions to mathematical logic and foundations of CS
+        </aside>
       </section>
       
       <section>
@@ -420,6 +424,7 @@
         <img src="./img/lambda.png">
         <aside class="notes">
           * Foundations of computer science
+          * Formal system in math logic and CS for expressing computation
           * Probably most famous for serving as basis of Lisp, invented by John
           McCarthy in 1958
         </aside>
@@ -477,6 +482,9 @@
         <br/>
         <br/>
         <h3 class="fragment center">Combinatory logic</h3>
+        <aside class="notes">
+          * American mathematician and logician
+          * Variant of the lambda calculus -> combinatory logic
       </section>
 
       <section>
@@ -584,6 +592,45 @@
               }
             }
         </code></pre>
+        <pre><code>
+            function checkAndRun = maybe(function(val){
+              // do something
+            }
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Combining maybe</h2>
+        <pre><code>
+          function get(prop){
+            return function(object){
+              return object[prop];
+            };
+          }
+        </code></pre>
+        <pre><code class="language-javascript">
+          var sparseArray = [
+            { name: 'Matt' },
+            { name: 'Tim' },
+            null,
+            { name: 'Andy' }
+            // ....
+          ];
+
+          sparseArray.map(get('name'));
+          //=> TypeError: Cannot read property 'name' of null
+
+          sparseArray.map(maybe(get('name')));
+          //=> ['Matt', 'Tim', null, 'Andy']  
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>D3 Combinators</h2>
+        <blockquote>
+          <p>D3's canonical representation of data is an array...taking a contiguous slice (subset) of an array, filtering an array using a predicate function, and mapping an array to a parallel set of values using a transform function.</p>
+          <cite>- D3 API Reference on Arrays</cite>
+        </blockquote>
       </section>
 
       <section data-markdown ><script type="text/template">
