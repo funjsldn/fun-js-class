@@ -73,3 +73,8 @@ body {
   line-height: 1.25em;
   display: block;
 }
+
+.monospace {
+    font-family: monospace !important;
+    font-weight: normal !important;
+}

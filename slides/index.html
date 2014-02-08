@@ -549,7 +549,7 @@
       </section>
 
       <section>
-        <h2>Maybe</h2>
+        <h2 class="monospace">maybe</h2>
         <br/>
         <ul>
           <li>JavaScript doesn't strongly enforce notion of variables or properties be <em>something</em></li>
@@ -573,7 +573,7 @@
       </section>
 
       <section>
-        <h2>Maybe</h2>
+        <h2 class="monospace">maybe</h2>
         <br/>
         <pre><code class="language-javascript">
             function maybe(fn){
@@ -600,7 +600,7 @@
       </section>
 
       <section>
-        <h2>Combining maybe</h2>
+        <h2>Combining <span class="monospace">maybe</span></h2>
         <pre><code>
           function get(prop){
             return function(object){
@@ -630,7 +630,196 @@
       </section>
 
       <section>
-        <h2>Combinators in Underscore</h2>
+        <h1>Combinators in Underscore</h1>
+        <br/>
+        <div class="fragment">
+          <h3>Function Combinators</h3>
+          <br/>
+          <p class="fragment" style="font-family: monospace;">after, bind, bindAll, bindKey,
+            <span class="fragment highlight-green" data-fragment-index="2">compose</span>,
+            <span class="fragment highlight-green" data-fragment-index="2">curry</span>, debounce, defer, delay, memoize, once,
+            <span class="fragment highlight-green" data-fragment-index="2">partial</span>, partialRight, throttle, wrap</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="monospace">partial</h2>
+        <br/>
+        <h3>Partial Application</h3>
+        <br/>
+        <p>Partial application prepends any number of arguments to a polyadic function and produces another function that can be called with fewer arguments than the original.</p>
+        <pre><code>
+          function add(a, b){ return a + b; }
+
+          // Normally, application is a single operation:
+          add(1, 2);
+          //=> 3
+
+          // Partial application decomposes a single
+          // operation into multiple operations
+          var addOne = _.partial(add, 1);
+
+          addOne(10);
+          //=> 11
+        </code></pre>
+      </section>
+
+      <section>
+        <h2 class="monospace">Function.prototype.bind</h2>
+        <br/>
+        <ul>
+          <li>Functionally similar to <code>partial</code> but have to supply a context as first argument</li>
+          <li>Doesn't lend itself to composition</li>
+        </ul>
+        <pre><code>
+          var addOne = add.bind(this, 1);
+
+          addOne(10);
+          //=> 11
+        </code></pre>
+      </section>
+
+      <section>
+        <h2 class="monospace">curry</h2>
+        <br/>
+        <h3>Currying</h3>
+        <br/>
+        <ul>
+          <li>Process of taking a function with multiple arguments and creating another function that:</li>
+          <ol>
+            <li>Takes only a single argument, and</li>
+            <li>Returns another curried function if there are any remaining arguments</li>
+          </ol>
+          <br/>
+          <li>A curried function is one that is composed of nested unary functions that can then be called as a chain.</li>
+        </ul>
+      </section>
+
+      <section>
+        <pre><code>
+          function add(a, b){
+            return a + b;
+          }
+
+          // _.curry(add)
+          function add(a){
+            return function(b){
+              return a + b;
+            }
+          }
+
+          // Called as a chain...
+          add(10)(20)
+          //=> 30
+
+          //...or specifying less than total required arguments
+          var addOne = add(1);
+
+          // returns an anonymous curried
+          // function assigned to `addOne`
+          // => addOne = function(b){ return a + b }
+
+          addOne(2);
+          //=> 3
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>What's the difference?</h2>
+        <br/>
+        <ul>
+          <li>Example of partial application here uses a function to `bind` variables</li>
+          <li>Currying is the process of converting variadic functions into a structure that can be partially-applied simply because of their structure</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>A less-contrived example</h3>
+        <pre><code>
+          var modulo = curry(function(divisor, dividend){
+            return dividend % divisor;
+          });
+
+          modulo(3, 9);
+          //=> 0
+
+          // Partially applying `modulo` with
+          // the number 2 to give us our utility function
+          var isOdd = modulo(2);
+
+          // Which returns a truthy or falsey value
+          isOdd(6);
+          //=> 0
+          isOdd(5);
+          //=> 1
+        </code></pre>
+      </section>
+
+      <section>
+        <pre><code>
+          // Another wrapper, this time around
+          // the native `filter` method
+          var filter = curry(function(f, xs){
+            return xs.filter(f);
+          });
+
+          filter(isOdd, [1,2,3,4,5]);
+          //=> [1,3,5]
+
+          // Partially applying `filter` with `isOdd`
+          var getTheOdds = filter(isOdd);
+
+          // And we end up with a useful little
+          // function that will return all the
+          // odd numbers in an array
+          getTheOdds([1,2,3,4,5]);
+          //=> [1,3,5]
+        </code></pre>
+      </section>
+
+      <section>
+        <h2 class="monospace">compose</h2>
+        <br/>
+        <h3>Function composition</h3>
+        <br/>
+        <ul>
+          <li>Build new functions from other functions</li>
+          <li>Helps build generic programs without using arguments</li>
+          <li>Extremely high-level, declarative coding</li>
+          <li>Mathmatically-backed</li>
+        </ul>
+      </section>
+
+      <section>
+        <img src="./img/composition.png"/>
+      </section>
+
+      <section>
+        <h2>Example</h2>
+        <pre><code>
+      // Chaining
+      var sortedPhones = function(users){
+        return _.chain(users)
+                .sortBy(function(user){
+                  return user.signup_date;
+                })
+                .map(function(user){ return user.phone })
+                .value();
+      }
+
+        
+      // Composing
+      var sortedPhones =
+        _.compose(
+          _.map(function(user){ return user.phone)),
+          _.sortBy(function(user){ return user.signup_date; }));
+
+        
+      // Remember `pluck`?
+      var sortedPhone =
+        _.compose(_.map(pluck('phone')),
+                  _.sortBy(pluck('signup_date')));
+        </code></pre>
       </section>
 
       <section data-markdown ><script type="text/template">
@@ -639,7 +828,6 @@
           ### [@timruffles](http://twitter.com/timruffles)
           ### [@mattfieldy](http://twitter.com/mattfieldy)
       </script></section>
-
 
 </div>
 </div>
