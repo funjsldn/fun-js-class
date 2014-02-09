@@ -11,13 +11,18 @@ function reject(xs, fn){
 }
 
 function every(xs, fn){
-  for (var i = 0; i < xs.length; i++) {
-    var x = xs[i];
-    fn = fn || function(y){ return !!y; };
-    
-    if (!fn(x)) return false;
-    else return true;
+  var result = true;
+  var index = -1, length = xs.length;
+  
+  fn = fn || function(y){ return !!y; };
+
+  while (++index < length){
+    if (!(result = !!fn(xs[index]))) {
+      break;
+    }
   }
+
+  return result;
 }
 
 function mapValues(obj, fn){
