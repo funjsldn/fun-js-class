@@ -5,14 +5,11 @@
   <title>Functional Programming In Javascript</title>
   
   <link rel="stylesheet" href="reveal/css/reveal.min.css">
-  <link rel="stylesheet" href="reveal/lib/css/github.css">
+  <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
 
   <link rel="stylesheet" href="slides-theme/style.css">
   <link rel="stylesheet" href="slides-theme/talk-specific.css">
-
   <link rel="stylesheet" href="diagrams.css">
-
-  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -29,22 +26,24 @@
 
             [@timruffles](http://twitter.com/timruffles)
             [@mattfieldy](http://twitter.com/mattfieldy)
+            
+          </div>
 
-</script></section>
+      </script></section>
 
-<section data-markdown ><script type="text/template">
-# Hello
+      <section data-markdown ><script type="text/template">
+          # Hello
 
-- [github.com/funjsldn/fun-js-class](https://github.com/funjsldn/fun-js-class)
-- Code + slides up above - clone if you've got `git`, or grab the `.zip`.
-- `slides`
-- `exercises`
+          - [github.com/funjsldn/fun-js-class](https://github.com/funjsldn/fun-js-class)
+          - Code + slides up above - clone if you've got `git`, or grab the `.zip`.
+          - `slides`
+          - `exercises`
 
-</script></section>
+      </script></section>
 
-<section data-markdown ><script type="text/template">
-# What is FP?
-</script></section>
+      <section data-markdown ><script type="text/template">
+          # What is FP?
+      </script></section>
 
 <section data-markdown ><script type="text/template">
 
@@ -76,7 +75,7 @@
 
       <section>
 
-        <pre><code class="javascript">
+        <pre><code>
         function forEach(xs, fn) {
           for (var i = 0; i < xs.length; i++) {
             return fn(xs[i]);
@@ -102,7 +101,7 @@
       <section data-markdown ><script type="text/template">
           ### JavaScript has first-class functions
 
-          <pre><code class="javascript">
+          <pre><code >
               function hello(){
                 return "Hello, world!";
               }
@@ -142,16 +141,16 @@
       <section data-markdown ><script type="text/template">
           * Which is more likely to contain a bug?
           
-          <pre><code class="javascript">
+          <pre><code>
               // Self-contained, six-lines long
               var total = 0, count = 1;
               while (count <= 10) {
-                total += count;
+                total = count;
                 count += 1;
               }
               console.log(total);                
           </code></pre>
-          <pre><code class="javascript">
+          <pre><code>
               // Relies on two external functions, one line long
               console.log(sum(range(1, 10)));
               
@@ -170,7 +169,7 @@
           </ul>
         </ul>
 
-        <pre><code class="javascript">
+        <pre><code >
           function unless(test, then){
             if (!test) then();
           }
@@ -271,7 +270,7 @@
       <section>
         <h3>Making Our Own</h3>
 
-        <pre><code class="javascript">
+        <pre><code >
         function getText(el){ return el.innerText }
 
         var links = document.getElementsByClassName('link');
@@ -282,7 +281,7 @@
                 
         <p>Instead of passing a function into `map`, could write a HOF that instead takes a function and turns into a mapping:</p>
 
-      <pre><code class="javascript">
+      <pre><code >
       function splat(fn){
         return function(xs){
           return Array.prototype.map.call(list, fn);
@@ -300,7 +299,7 @@
       <section>
         <p>If we didn't use `splat`, we'd have to write something like this out every time we wanted to construct a function that maps an array to a result:</p>
 
-        <pre><code class="javascript">
+        <pre><code >
           function mapGetText(xs){
             return xs.map(function(x){
               return x.innerText;
@@ -314,7 +313,7 @@
         <br/>
         <p><code>get</code> - takes the name of a property and returns a function 
     that gets that property from an object:</p>
-        <pre><code class="javascript">
+        <pre><code >
             function get(prop){
               return function(object){
                 return object[prop];
@@ -333,15 +332,21 @@
       </section>
 
       <section>
-        <pre><code class="javascript">
+        <pre><code >
         var users = [
-          { 'name': 'John', 'age': 32, 'location': 'London' },
-          { 'name': 'Wendy', 'age': 19, 'location': 'Amsterdam' },
-          { 'name': 'Sheila', 'age': 41, 'location': 'New York' }
+          { 'name': 'John',
+             'age': 32,
+             'location': 'London' },
+          { 'name': 'Wendy',
+            'age': 19,
+            'location': 'Amsterdam' },
+          { 'name': 'Sheila',
+            'age': 41,
+            'location': 'New York' }
         ];
         </code></pre>
         <p>Now we can make our earlier <code>splat</code> function work for us:</p>
-        <pre><code class="javascript">
+        <pre><code >
         var firstNames = splat(get('name'))(users);
         //=> ["John", "Wendy", "Sheila"]
 
@@ -354,7 +359,7 @@
       
       <section>
         <p>Such a common pattern that we can take things up another level:</p>
-        <pre><code class="javascript">
+        <pre><code >
         function pluck(prop){
           return splat(get(prop));
         }
@@ -364,27 +369,474 @@
         </code></pre>
         <br/>
         <p>Libraries like Lo-Dash implement this in a slightly different format:</p>
-        <pre><code class="javascript">
+        <pre><code >
         _.pluck(users, 'name');
         //=> ["John", "Wendy", "Sheila"]
         </code></pre>
       </section>
 
       <section data-markdown>
-        # Your turn!
+        # Your turn
+
+        ## Implementing Underscore
       </section>
 
+      <section data-markdown>
+        # Combinators
+        
+        * What are they?
+        * How do they work?
+        * Why would we use them?
+      </section>
 
+      <section data-markdown>
+        ### Specifically:
+        
+        > A combinator is a higher-order function that uses only function application
+        and previously-defined combinators to define a result from its arguments.
 
-<section data-markdown ><script type="text/template">
+        ### In other words:
 
-# Any other questions?
+        > Combinators are pure functions that act on other functions to produce functions.
+      </section>
+      
+      <section>
+        <h2>Interlude - A Brief History</h2>
 
+        <h2>1930s</h2>
+        <br/>
+        <div class="fragment">
+          <h3 class="center">Alonzo Church</h3>
+          <br/>
+          <img src="./img/church.jpg" height="350">
+        </div>
+        <aside class="notes">
+          * American mathematician and logician
+          * Major contributions to mathematical logic and foundations of CS
+        </aside>
+      </section>
+      
+      <section>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <img src="./img/lambda.png">
+        <aside class="notes">
+          * Foundations of computer science
+          * Formal system in math logic and CS for expressing computation
+          * Probably most famous for serving as basis of Lisp, invented by John
+          McCarthy in 1958
+        </aside>
+      </section>
 
-## @timruffles, @mattfieldy
+      <section>
+        <h2>Lambda Calculus</h2>
+        <br/>
+        <ul>
+          <li>Formal systems in mathmatical logic and computer science for expression computation using only:</li>
+          <ul>
+            <li>function abstraction</li>
+            <li>function application</li>
+          </ul>
+        </ul>
+        <pre><code >
+            // Abstraction - (&#955;x.x)
+            function(x){ return x };
 
-</script></section>
+            // Application - (ƒ x)
+            (function(x){ return x })(y);
+        </code></pre>
+      </section>
+        
+      <section>
+        <pre><code >
+          /* Functions that return functions
+             :: &#955;x.&#955;y.x + y */
+          function(x){
+            return function(y){
+              return x + y;
+            }
+          }
 
+          /* Functions that take functions as input
+             :: &#955;ƒ.&#955;x.(ƒ x) */
+          function(fn){
+            return function(x){
+              return fn(x);
+            }
+          }
+        </code></pre>
+        <br/>
+        <h2 class="fragment center">Look familiar?</h2>
+        <br/>
+        <p class="fragment center">First-class functions & higher-order functions</p>
+      </section>
+
+      <section>
+        <img src="./img/computation.png" class="" alt="" />
+        <aside class="notes">
+          * Example of expressivity: John McCarthy defined an entire prog language
+          in seven of only seven functions and two special forms
+          * Whole of computation described through combination of these nine forms
+        </aside>
+      </section>
+
+      <section>
+        <h2 class="center">By our powers combined</h2>
+        <br/>
+        <h3 class="center">Haskell Curry</h3>
+        <br/>
+        <img src="./img/curry.jpg">
+        <br/>
+        <br/>
+        <h3 class="fragment center">Combinatory logic</h3>
+        <aside class="notes">
+          * American mathematician and logician
+          * Variant of the lambda calculus -> combinatory logic
+      </section>
+
+      <section>
+        <h2>Combinators > abstraction</h2>
+        <br/>
+        <ul>
+          <li>Function abstraction replaced with a set of <em>combinators</em>, primitive
+          functions that contain no bound variables:</li>
+        </ul>
+        <pre><code class="javascript">
+            // Function abstraction
+            function(x){ return x };
+            //=> x
+
+            // "Identity" or I combinator
+            var I = function(x){ return x; };
+            
+            I(ƒ);
+            //=> ƒ
+
+            // "Kestrel" or K combinator
+            var K = function(x){
+              return function(y){
+                return x;
+              }
+            };
+
+            K(5)(10);
+            //=> 5
+        </code></pre>
+      </section>
+
+      <section>
+        <blockquote><h2 class="center">If Objects are nouns and Methods are verbs, Combinators are the adverbs of programming.</h2>
+          <br/>
+          <cite>- JavaScript Allongé, Reg Brathwaite</cite>
+        </blockquote>
+      </section>
+
+      <section>
+        <h2>And now for something useful</h2>
+        <br/>
+        <pre class="fragment"><code>
+          function splat(fn){
+            return function(xs){
+              return Array.prototype.map.call(list, fn);
+            }
+          }
+        </code></pre>
+        <pre class="fragment"><code >
+          function get(prop){
+            return function(object){
+              return object[prop];
+            };
+          }
+        </code></pre>
+        <pre class="fragment"><code >
+          function pluck(prop){
+            return splat(get(prop));
+          } 
+        </code></pre>
+      </section>
+
+      <section>
+        <h2 class="monospace">maybe</h2>
+        <br/>
+        <ul>
+          <li>JavaScript doesn't strongly enforce notion of variables or properties be <em>something</em></li>
+          <li>Have to write programs to account for values that may be <em>nothing</em></li>
+        </ul>
+        <pre><code >
+            function isSomething(value){
+              return value != null;
+            }
+
+            function checkAndRun(value){
+              if (isSomething(value){
+                // do something
+              }
+            }
+        </code></pre>
+        <pre><code >
+            var something = isSomething(value) ?
+                            justRuns(value) : value;
+        </code></pre>
+      </section>
+
+      <section>
+        <h2 class="monospace">maybe</h2>
+        <br/>
+        <pre><code class="language-javascript">
+            function maybe(fn){
+              return function(){
+                var i;
+
+                if (arguments.length === 0) {
+                  return;
+                } else {
+                  for (i = 0; i < arguments.length; ++i) {
+                    if (arguments[i] == null)
+                      return arguments[i];
+                  }
+                  return fn.apply(this, arguments)
+                }
+              }
+            }
+        </code></pre>
+        <pre><code>
+            function checkAndRun = maybe(function(val){
+              // do something
+            }
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Combining <span class="monospace">maybe</span></h2>
+        <pre><code>
+          function get(prop){
+            return function(object){
+              return object[prop];
+            };
+          }
+        </code></pre>
+        <pre><code class="language-javascript">
+          var sparseArray = [
+            { name: 'Matt' },
+            { name: 'Tim' },
+            null,
+            { name: 'Andy' }
+            // ....
+          ];
+
+          sparseArray.map(get('name'));
+          //=> TypeError: Cannot read property 'name' of null
+
+          sparseArray.map(maybe(get('name')));
+          //=> ['Matt', 'Tim', null, 'Andy']  
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>D3 Combinators</h2>
+      </section>
+
+      <section>
+        <h1>Combinators in Underscore</h1>
+        <br/>
+        <div class="fragment">
+          <h3>Function Combinators</h3>
+          <br/>
+          <p class="fragment" style="font-family: monospace;">after, bind, bindAll, bindKey,
+            <span class="fragment highlight-green" data-fragment-index="2">compose</span>,
+            <span class="fragment highlight-green" data-fragment-index="2">curry</span>, debounce, defer, delay, memoize, once,
+            <span class="fragment highlight-green" data-fragment-index="2">partial</span>, partialRight, throttle, wrap</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="monospace">partial</h2>
+        <br/>
+        <h3>Partial Application</h3>
+        <br/>
+        <p>Partial application prepends any number of arguments to a polyadic function and produces another function that can be called with fewer arguments than the original.</p>
+        <pre><code>
+          function add(a, b){ return a + b; }
+
+          // Normally, application is a single operation:
+          add(1, 2);
+          //=> 3
+
+          // Partial application decomposes a single
+          // operation into multiple operations
+          var addOne = _.partial(add, 1);
+
+          addOne(10);
+          //=> 11
+        </code></pre>
+      </section>
+
+      <section>
+        <h2 class="monospace">Function.prototype.bind</h2>
+        <br/>
+        <ul>
+          <li>Functionally similar to <code>partial</code> but have to supply a context as first argument</li>
+          <li>Doesn't lend itself to composition</li>
+        </ul>
+        <pre><code>
+          var addOne = add.bind(this, 1);
+
+          addOne(10);
+          //=> 11
+        </code></pre>
+      </section>
+
+      <section>
+        <h2 class="monospace">curry</h2>
+        <br/>
+        <h3>Currying</h3>
+        <br/>
+        <ul>
+          <li>Process of taking a variadic function and creating another function that:</li>
+          <ol>
+            <li>Takes only a single argument, and</li>
+            <li>Returns another curried function if there are any remaining arguments</li>
+          </ol>
+          <br/>
+          <li>A curried function is one that is composed of nested unary functions that can then be called as a chain.</li>
+        </ul>
+      </section>
+
+      <section>
+        <pre><code>
+          function add(a, b){
+            return a + b;
+          }
+
+          // _.curry(add)
+          function add(a){
+            return function(b){
+              return a + b;
+            }
+          }
+
+          // Called as a chain...
+          add(10)(20)
+          //=> 30
+
+          //...or specifying less than total required arguments
+          var addOne = add(1);
+
+          // returns an anonymous curried
+          // function assigned to `addOne`
+          // => addOne = function(b){ return a + b }
+
+          addOne(2);
+          //=> 3
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>What's the difference?</h2>
+        <br/>
+        <ul>
+          <li>Example of partial application here uses a function to "bind" variables</li>
+          <li>Currying is the process of converting variadic functions into a form that can be partially-applied simply because of their structure</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>A less-contrived example</h3>
+        <pre><code>
+          var modulo = curry(function(divisor, dividend){
+            return dividend % divisor;
+          });
+
+          modulo(3, 9);
+          //=> 0
+
+          // Partially applying `modulo` with
+          // the number 2 to give us our utility function
+          var isOdd = modulo(2);
+
+          // Which returns a truthy or falsey value
+          isOdd(6);
+          //=> 0
+          isOdd(5);
+          //=> 1
+        </code></pre>
+      </section>
+
+      <section>
+        <pre><code>
+          // Another wrapper, this time around
+          // the native `filter` method
+          var filter = curry(function(f, xs){
+            return xs.filter(f);
+          });
+
+          filter(isOdd, [1,2,3,4,5]);
+          //=> [1,3,5]
+
+          // Partially applying `filter` with `isOdd`
+          var getTheOdds = filter(isOdd);
+
+          // And we end up with a useful little
+          // function that will return all the
+          // odd numbers in an array
+          getTheOdds([1,2,3,4,5]);
+          //=> [1,3,5]
+        </code></pre>
+      </section>
+
+      <section>
+        <h2 class="monospace">compose</h2>
+        <br/>
+        <h3>Function composition</h3>
+        <br/>
+        <ul>
+          <li>Build new functions from other functions</li>
+          <li>Helps build generic programs without using arguments</li>
+          <li>Extremely high-level, declarative coding</li>
+          <li>Mathmatically-backed</li>
+        </ul>
+      </section>
+
+      <section>
+        <img src="./img/composition.png"/>
+      </section>
+
+      <section>
+        <h2>Example</h2>
+        <pre><code>
+      // Chaining
+      var sortedPhones = function(users){
+        return _.chain(users)
+                .sortBy(function(user){
+                  return user.signup_date;
+                })
+                .map(function(user){ return user.phone })
+                .value();
+      }
+
+        
+      // Composing
+      var sortedPhones =
+        _.compose(
+          _.map(function(user){ return user.phone)),
+          _.sortBy(function(user){ return user.signup_date; }));
+
+        
+      // Remember `pluck`?
+      var sortedPhone =
+        _.compose(_.map(pluck('phone')),
+                  _.sortBy(pluck('signup_date')));
+        </code></pre>
+      </section>
+
+      <section data-markdown ><script type="text/template">
+          # Any other questions?
+
+          ### [@timruffles](http://twitter.com/timruffles)
+          ### [@mattfieldy](http://twitter.com/mattfieldy)
+      </script></section>
 
 </div>
 </div>
