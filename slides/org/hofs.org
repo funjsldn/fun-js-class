@@ -1,0 +1,200 @@
+#+TITLE: HOFs
+#+AUTHOR: Matt Field
+#+DATE: <2014-01-24 Fri>
+
+* Higher-Order Functions (20 minutes)
+  - Look at problems and create HOF(s) to simplify
+
+** What are they?
+  - Higher-order functions are functions that do at least one of the following:
+    1. Take one or more functions as input
+    2. Return a function as their result
+  - Lend themselves to a more functional, declarative style of programming vs
+    imperative, step-by-step definition (e.g. ~map~ vs ~for~ loops)
+
+** How do they work?
+  - JS has first-class fns!
+  - Can be passed as arguments, returned from functions and stored in variables
+
+** Why would we use them?
+  - HOFs grant us a powerful level of abstraction
+  - Combine elements of our programs into shorter, more meaningful blocks of code
+    that can themselves be combined and used as building blocks
+  
+** Familiar examples
+  - canonical examples of HOFs: ~map~, ~filter~, ~reduce~
+  - take a quick look at how they work with our own implementations
+
+- map :: ~map~ works by taking an array of items and applying a function to each item
+         in that array. ~map~ then returns a *new* array whose items are the result.
+
+#+begin_src js
+function map(xs, fn){
+  var arr = [];
+  for (var i = 0; i < xs.length; i++) {
+    arr.push(fn(xs[i]));    
+  }
+  return arr;
+}
+
+map(["an", "array", "of", "strings"], function(word){
+  return word.toUppercase();
+});
+//=> ["AN", "ARRAY", "OF", "STRINGS"]
+#+end_src
+
+- filter :: ~filter~ works by taking an array of items and appying a predicate function (a function
+            that returns either ~true~ or ~false~) to each of them. Returns a list of those items
+            that satisfy the predicate.
+
+#+begin_src js
+function filter(xs, pred){
+  var filtered = [];
+  for (var i = 0; i < xs.length; i++) {
+    var item = xs[i];
+    if (pred(item)) filtered.push(item);
+  }
+  return filtered;
+}
+
+filter(["one", 2, 3, "four", "five", 6], function(item){
+  return _.isNumber(item);
+});
+//=> [2, 3, 6]
+#+end_src
+
+- reduce :: ~reduce~ applies a function against an accumulated value and each value of an array, from left-to-right, 
+            and reduces down to a single value.
+
+#+begin_src js
+function reduce(xs, fn, initial){
+  var result = initial;
+  for (var i = 0; i < xs.length; i++) {
+    result = fn(result, xs[i]);
+  }
+  return result;
+}
+
+function add(a, b){ return a + b; }
+
+reduce([1,2,3,4,5], add, 0);
+//=> 15
+#+end_src
+
+#+begin_src js
+// Or, a slightly more interesting example
+
+function flatten(a, b){
+  return a.concat(b);
+}
+
+reduce([[0, 1], [2, 3], [4, 5]], flatten, []);
+//=> [0, 1, 2, 3, 4, 5]
+#+end_src
+
+  - Might also hear reduction referred to as a ~fold~
+
+** Making our own
+  - HOFs give us a powerful abstraction mechanism
+  - Create our own descriptive building blocks and helpful utility methods
+
+#+begin_src js
+function getText(el){ return el.innerText }
+
+var links = document.getElementsByClassName('link');
+
+map(links, getText);
+//=> ["Home", "About", "Blog", "Contact"]
+#+end_src
+
+  - Instead of passing a function into `map`, could write 
+    a HOF that instead takes a function and turns into a mapping 
+    using `splat`
+
+#+begin_src js
+function splat(fn){
+  return function(xs){
+    return Array.prototype.map.call(list, fn);
+  }
+}
+
+// Create a new mapping function from `pluck`:
+var mapGetText = splat(getText);
+
+mapGetText(links);
+//=> ["Home", "About", "Blog", "Contact"]
+#+end_src
+
+  - If we didn't use `splat`, we'd have to write something like this out
+    every time we wanted to construct a function that maps an array to a result:
+
+#+begin_src js
+function mapGetText(xs){
+  return xs.map(function(x){
+    return x.innerText;
+  });
+}
+#+end_src
+
+  - Working on arrays up until now; what about objects?
+  - Very simple function, `get`, takes the name of a property and returns a function 
+    that gets that property from an object:
+
+#+begin_src js
+function get(prop){
+  return function(object){
+    return object[prop];
+  };
+}
+
+var user = {
+  'name': 'John',
+  'age': 32,
+  'location': 'London'
+};
+
+get('location')(user);
+//=> 'London'
+#+end_src
+
+  - Probably dealing with an array of users (JSON?):
+
+#+begin_src js
+var users = [
+  { 'name': 'John', 'age': 32, 'location': 'London' },
+  { 'name': 'Wendy', 'age': 19, 'location': 'Amsterdam' },
+  { 'name': 'Sheila', 'age': 41, 'location': 'New York' }
+];
+#+end_src
+
+  - Now we can make our earlier `splat` function work for us:
+
+#+begin_src js
+var firstNames = splat(get('name'))(users);
+//=> ["John", "Wendy", "Sheila"]
+
+// Which is nicer that writing:
+var firstNames = splat(function(user){
+  return user.name
+})(users);
+#+end_src
+
+  - Such a common pattern that we can take things up another level:
+
+#+begin_src js
+function pluck(prop){
+  return splat(get(prop));
+}
+
+pluck('name')(users);
+//=> ["John", "Wendy", "Sheila"]
+#+end_src
+
+  - Libraries like Lo-Dash implement this in slightly different format:
+
+#+begin_src js
+_.pluck(users, 'name');
+//=> ["John", "Wendy", "Sheila"]
+#+end_src
+
+** Your Turn!

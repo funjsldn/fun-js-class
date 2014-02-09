@@ -43,6 +43,18 @@ body {
   padding: 0.5em;
   max-height: none;
 }
+.reveal blockquote {
+    padding: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.reveal pre {
+    width: 100% !important;
+}
+
+.center {
+    text-align: center !important;
+}
 
 .gallary img, .gallary .item {
   float: left;
@@ -60,4 +72,9 @@ body {
   font-size: 3rem;
   line-height: 1.25em;
   display: block;
+}
+
+.monospace {
+    font-family: monospace !important;
+    font-weight: normal !important;
 }
