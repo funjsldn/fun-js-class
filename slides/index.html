@@ -46,13 +46,264 @@ Grab code: <br> [github.com/funjsldn/fun-js-class](https://github.com/funjsldn/f
 # What is FP?
 </script></section>
 
-<section data-markdown ><script type="text/template">
+<section data-markdown><script type="text/template">
+## Programming with functions
+</script></section>
 
-- Passing functions to functions
-- Conciousness of sharing things that change
-- Separation of 'do something' and 'transforms data' code
+<section data-markdown><script type="text/template">
+## You can leave now
+</script></section>
+
+<section data-markdown><script type="text/template">
+## But actually...
+
+- polymorphism
+- abstraction
+- API design
+- ... not obvious how to do with just functions
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Languages
+
+- Lambda calculus
+- Haskell, OCaml, F#
+- Erlang
+- Lisp, Scheme, Clojure
+- Prolog
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Ideas
+
+- Immutability
+- Monads, functors (!?!?!?!)
+- Laziness
+- Referential transparency
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Let's KISS
+</script></section>
+
+<section data-markdown><script type="text/template">
+## What are the defining features of FP?
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Warning: our thinking
+
+- like pornography: "you know it when you see it"?
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Three is a magic number
+
+- always be suspcious of lists of three things
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Functional programmers have issues
 
 </script></section>
+<section data-markdown><script type="text/template">
+## They're snobs
+![snobs](img/snobs.png)
+</script></section>
+<section data-markdown><script type="text/template">
+## They're scared of change
+![change](img/change.png)
+</script></section>
+<section data-markdown><script type="text/template">
+## They have split personalities
+![split](img/split.png)
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Three things:
+
+1. first class functions
+1. scared of change(able variables)
+1. split 'launch rocket' from 'compute answer'
+</script></section>
+
+<section data-markdown><script type="text/template">
+## 1. First class functions
+</script></section>
+
+<section data-markdown><script type="text/template">
+## First-class-functions
+
+- First class: use wherever you can use other values
+
+```javascript
+function doTwice(fn) {
+  fn() // fn has been passed in as an argument
+  fn()
+}
+
+doTwice(function() {
+  console.log("Hello!")
+})
+
+function doubleFn(fn) {
+  return function() { // with FCFs we can return functions
+    doTwice(fn)
+  }
+}
+
+var doubleTalk = doubleFn(function() {
+  console.log("I'm going to be saying this twice")
+})
+
+doubleTalk()
+```
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Higher order functions
+
+- jargon no. 2
+- we can pass functions to functions to functions...
+
+```javascript
+function loop(fn) {
+  fn()
+  loop(fn)
+}
+
+loop(function() {
+  console.log("We'll be here for some time")
+})
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+## A good indicator for FP code
+
+- can't do much in FP without FCFs
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+## 2. Fear of change(able variables)
+</script></section>
+
+<section data-markdown><script type="text/template">
+- below code is in a loop
+- yes this is an extreme example
+
+```javascript
+    // Insanity Warning: scope depth-first traversal
+    // yes, this code is a bit crazy, but it works and we have tests to prove it!
+    // this piece should be kept in sync with the traversal in $broadcast
+    if (!(next = (current.$$childHead || (current !== target && current.$$nextSibling)))) {
+      while(current !== target && !(next = current.$$nextSibling)) {
+        current = current.$parent;
+      }
+    }
+  } while ((current = next));
+
+  if(dirty && !(ttl--)) {
+    clearPhase();
+    throw $rootScopeMinErr('infdig',
+        '{0} $digest() iterations reached. Aborting!\nWatchers fired in the last 5 iterations: {1}',
+        TTL, toJson(watchLog));
+  }
+} while (dirty || asyncQueue.length);
+```
+</script></section>
+
+<section data-markdown><script type="text/template">
+## See change, hide it
+
+- change is tricky, abstract it
+
+```javascript
+var numbers = [1,50,25,12,33,50]
+var squares = []
+for(var i = 0, len = numbers.length; i < len; i++)
+  squares[i] = numbers[i] * numbers[i]
+```
+
+```javascript
+var quickSquares = numbers.map(square)
+function square(x) { return x * x }
+```
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Bigger picture
+
+- lack of shared changable values = safe parallism
+- e.g map reduce: map breaks work into parallisable work
+- simplicity more relevent than parallelism to JS
+
+</script></section>
+
+
+<section data-markdown ><script type="text/template">
+
+## 3. Split 'launch rocket' from 'computer answer' 
+
+</script></section>
+
+<section data-markdown ><script type="text/template">
+
+```javascript
+$(".showFollowerStats",function() {
+  Followers.fetch(user,{
+    success: function() {
+      var ids = []; 
+      for(var i = 0, len = followers.length; i < len; i++)
+        ids.push(followers.id)
+      display(ids)
+    }
+  })
+})
+```
+
+</script></section>
+
+<section data-markdown ><script type="text/template">
+
+```javascript
+$(".showFollowerStats",function() {
+  Followers.fetch(user,{
+    success: withFollowers
+  })
+})
+// easy to test/reason about
+function withFollowers(followers) {
+  var ids = []; 
+  for(var i = 0, len = followers.length; i < len; i++)
+    ids.push(followers.id)
+}
+function display() {}
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Personality disorders
+
+1. snobbish about their functions
+1. scared of change
+1. split personalities
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+## Three things:
+
+1. first class functions
+1. scared of change(able variables)
+1. divide 'launch rocket' from 'compute answer'
+
+</script></section>
+
 
 
 <section data-markdown ><script type="text/template">
