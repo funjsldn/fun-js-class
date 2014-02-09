@@ -2,12 +2,12 @@
 // e.g. function myFunc(){...}
 
 function reject(xs, fn){
-  var rejected = [];
+  var included = [];
   for (var i = 0; i < xs.length; i++) {
     var x = xs[i];
-    if (!fn(x)) rejected.push(x);
+    if (!fn(x)) included.push(x);
   }
-  return rejected;
+  return included;
 }
 
 function every(xs, fn){
