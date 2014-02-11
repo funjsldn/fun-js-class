@@ -9,7 +9,6 @@
 
   <link rel="stylesheet" href="slides-theme/style.css">
   <link rel="stylesheet" href="slides-theme/talk-specific.css">
-  <link rel="stylesheet" href="diagrams.css">
 </head>
 
 <body>
@@ -105,25 +104,14 @@
 ## Functional programmers have issues
 
 </script></section>
-<section data-markdown><script type="text/template">
+<section data-markdown class='full-image' data-state=snobs><script type="text/template">
 ## They're snobs
-![snobs](img/snobs.png)
 </script></section>
-<section data-markdown><script type="text/template">
+<section data-markdown data-state=change><script type="text/template">
 ## They're scared of change
-![change](img/change.png)
 </script></section>
-<section data-markdown><script type="text/template">
+<section data-markdown data-state=split><script type="text/template">
 ## They have split personalities
-![split](img/split.png)
-</script></section>
-
-<section data-markdown><script type="text/template">
-## Three things:
-
-1. first class functions
-1. scared of change(able variables)
-1. split 'launch rocket' from 'compute answer'
 </script></section>
 
 <section data-markdown><script type="text/template">
@@ -275,9 +263,7 @@ $(".showFollowerStats",function() {
 })
 // easy to test/reason about
 function withFollowers(followers) {
-  var ids = []; 
-  for(var i = 0, len = followers.length; i < len; i++)
-    ids.push(followers.id)
+  // relies only on input
 }
 function display() {}
 ```
@@ -302,6 +288,88 @@ function display() {}
 1. divide 'launch rocket' from 'compute answer'
 
 </script></section>
+
+<section data-markdown><script type="text/template">
+## How is FP different?
+</script></section>
+
+<section data-markdown><script type="text/template">
+## vs plain structured programming
+
+- FCF = less repetition
+- FCF = more structure
+- less reliance on mutable variables
+- division of 'launch rocket' from 'compute'
+- not really seen much in JS, as FCFs everywhere
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+## vs OOP
+
+> OOP to me means only messaging, local retention and protection and hiding of state-process, and extreme late-binding of all things.
+
+Alan Kay
+
+- messaging/late binding
+- hiding of state
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+## OOP in practice
+
+> I'm sorry that I long ago coined the term "objects" for this topic because it gets many people to focus on the lesser idea. The big idea is "messaging"
+
+- class
+- inheritance
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+## Messaging & late-binding
+
+- a component wants something to happen: sends a message
+- another components picks it up, and does it
+- decouples parts of the system
+- polymorphism: receivers are many-shaped
+- Ruby/Objective C are messaging based, JS + Python + Lua can emulate
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Hiding of state
+
+- ideally: can only send messages
+- therefore no idea if state held locally, or via pidgeon messanger
+
+```javascript
+function User() {}
+User.prototype.getName = function() {
+  return blockingPidegonFetch("name")
+}
+
+var user = new User
+user.name // can't be intercepted/Kay late-bound
+user.getName() // can be intercepted/Kay late-bound
+```
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+
+## Does FP throw this out?
+
+- polymorphism: nope
+- late-binding: nope
+- hiding state: mostly yes
+- messaging: mostly yes
+- messaging/late bind and hiding state are means, not design goals
+
+</script></section>
+
 
       <section data-markdown ><script type="text/template">
           # Higher-Order Functions
@@ -1087,6 +1155,17 @@ function display() {}
           ### [@timruffles](http://twitter.com/timruffles)
           ### [@mattfieldy](http://twitter.com/mattfieldy)
       </script></section>
+<section data-markdown ><script type="text/template">
+
+## Creative commons work
+
+- [split personality, eelsmann](http://www.flickr.com/photos/eelsmann/2516127452/)
+- [scared of change, Doug Brown](http://www.flickr.com/photos/49814332@N04/8003059230/)
+- [snob, Bethany](http://www.flickr.com/photos/bethanyegan/6565582497/)
+
+
+</script></section>
+
 
 </div>
 </div>

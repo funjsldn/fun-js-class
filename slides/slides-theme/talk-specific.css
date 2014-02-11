@@ -1,0 +1,18 @@
+.snobs body {
+  background: url(../img/snob.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.change body {
+  background: url(../img/change.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.split body {
+  background: url(../img/split.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.change .reveal h2 {
+  color: #000;
+}
