@@ -7,6 +7,11 @@ describe("call and apply",function() {
     return this + a;
   }
 
+  function slicer(thing,from,to) {
+    // YOUR CODE
+    // END CODE
+  }
+
   describe("call",function() {
     // for these tests, change the arguments to .call to make the tests pass
     it("can be used to set the value of 'this' for functions using it",function() {
@@ -23,6 +28,18 @@ describe("call and apply",function() {
       var middleTwoElementsSliced = notAnArray;
       // END CODE
       assert.deepEqual(middleTwoElementsSliced,["bar","baz"]);
+    });
+
+    it("can be used with to create a reusable 'slicer' that slices any array-like thing",function() {
+
+      // references 'slicer' function
+
+      var notAnArray = {0:"foo",1: "bar",2: "baz",3: "qux",length:4};
+      var anArray = ["afoo","abar","abaz","aqux"];
+
+      assert.deepEqual(slicer(notAnArray,1,3),["bar","baz"]);
+      assert.deepEqual(slicer(anArray,1,3),["abar","abaz"]);
+      assert.deepEqual(slicer(anArray,1),["abar","abaz","aqux"]);
     });
   })
 
