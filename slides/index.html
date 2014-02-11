@@ -366,13 +366,20 @@ user.getName() // can be intercepted/Kay late-bound
 - late-binding: nope
 - hiding state: mostly yes
 - messaging: mostly yes
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Means vs Ends
+
 - messaging/late bind and hiding state are means, not design goals
 
 </script></section>
 
 
       <section data-markdown ><script type="text/template">
-          # Higher-Order Functions
+          ## Higher-Order Functions
 
           * What are they?
           * How do they work?
@@ -382,7 +389,7 @@ user.getName() // can be intercepted/Kay late-bound
       </script></section>
 
       <section data-markdown ><script type="text/template">
-          # What are HOFs?
+          ## What are HOFs?
 
           * Functions that do at least one of the following:
           
@@ -417,7 +424,7 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
 
       <section data-markdown ><script type="text/template">
-          ### JavaScript has first-class functions
+          #### JavaScript has first-class functions
 
           <pre><code >
               function hello(){
@@ -446,11 +453,11 @@ user.getName() // can be intercepted/Kay late-bound
       </script></section>
 
       <section data-markdown ><script type="text/template">
-          # Why would you use them?
+          ## Why would you use them?
 
-          > There are two ways of constructing a software design:
-          > One way is to make it so simple that there are obviously no
-          > deficiencies and the other way is to make it so complicated
+          > There are two ways of constructing software:
+          > make it so simple that there are obviously no
+          > deficiencies, or make it so complicated
           > that there are no obvious deficiencies. 
           >
           > -- C.A.R Hoare, 1980 ACM Turing Award Lecture
@@ -482,9 +489,7 @@ user.getName() // can be intercepted/Kay late-bound
       <section>
         <ul>
           <li>Powerful level of abstraction</li>
-          <ul>
-            <li>Specifically, abstraction over <em>actions</em> not just values</li>
-          </ul>
+          <li>Specifically, abstraction over <em>actions</em> not just values</li>
         </ul>
 
         <pre><code >
@@ -505,7 +510,7 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
 
       <section data-markdown ><script type="text/template">
-          # Familiar Examples
+          ## Familiar Examples
 
           Canonical examples:
           
@@ -515,7 +520,7 @@ user.getName() // can be intercepted/Kay late-bound
       </script></section>
       
       <section data-markdown><script type="text/template">
-          # map
+          ## map
 
           Takes an array of items and applies a function to each item in that array, then returns a *new* array whose items are the result.
 
@@ -534,7 +539,7 @@ user.getName() // can be intercepted/Kay late-bound
       </script></section>
 
       <section data-markdown><script type="text/template">
-          # filter
+          ## filter
 
           Takes an array of items and applies a predicate (a function that returns either true or false) to each of them. Returns a list of those items that satisfy the predicate.
 
@@ -555,7 +560,7 @@ user.getName() // can be intercepted/Kay late-bound
       </script></section>
 
       <section data-markdown><script type="text/template">
-          # reduce
+          ## reduce
 
           Applies a function against an accumulated value and each value of an array, from left-to-right, and reduces down to a single value.
 
@@ -694,13 +699,13 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
 
       <section data-markdown>
-        # Your turn
+        ## Your turn
 
         ## Implementing Underscore
       </section>
 
       <section data-markdown>
-        # Combinators
+        ## Combinators
         
         * What are they?
         * How do they work?
