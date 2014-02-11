@@ -16,3 +16,6 @@
 .change .reveal h2 {
   color: #000;
 }
+.split .reveal h2, .snobs .reveal h2 {
+  color: #fff;
+}
