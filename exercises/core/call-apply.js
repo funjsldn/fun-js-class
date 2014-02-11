@@ -70,6 +70,55 @@ describe("call and apply",function() {
       assert.equal([1,-100,50,1000,-2].reduce(maxer),1000);
     });
 
+    describe("can use arguments, apply and HOFs to recreate .bind",function() {
+
+      function yourBind(fn,thisArg) {
+        // YOUR CODE HERE
+        var args = [].slice.call(arguments,2);
+        return function() {
+          var extraArgs = [].slice.call(arguments);
+          return fn.apply(thisArg,args.concat(extraArgs));
+        }
+        // END YOUR CODE
+      }
+
+      function yourPartial(fn) {
+        // YOUR CODE HERE
+        var args = [fn,null].concat([].slice.call(arguments,1));
+        return yourBind.apply(null,args);
+        // END YOUR CODE
+      }
+
+      function usesThisAndTwoArgs(a,b) {
+        return [a,b,this.property].join("-");
+      }
+      function usesThreeArgs(a,b,c) {
+        return [a,b,c].join("-");
+      }
+
+      var boundOnce = yourBind(usesThisAndTwoArgs,{property: "thisArg"},"a");
+      var boundTwice = yourBind(boundOnce,null,"b");
+      var boundThreeTimes = yourBind(yourBind(yourBind(usesThisAndTwoArgs,{property: "thisArg"}),null,"a"),null,"y");
+
+      var partialThreeTimes = yourPartial(yourPartial(yourPartial(usesThreeArgs,"a"),"m"),"z");
+
+      it("can be applied repeatedly",function() {
+        assert.equal(boundTwice(),"a-b-thisArg")
+      })
+      it("can be applied repeatedly - further",function() {
+        assert.equal(boundThreeTimes(),"a-y-thisArg")
+      })
+      it("can use extra arguments",function() {
+        assert.equal(boundOnce("z"),"a-z-thisArg")
+      })
+      it("isn't hard-coded",function() {
+        assert.equal(boundOnce("b"),"a-b-thisArg","uses extra arguments")
+      })
+      it("in turn, can implement partial",function() {
+        assert.equal(partialThreeTimes(),"a-m-z")
+      })
+    });
+
 
   });
 
