@@ -953,10 +953,6 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
 
       <section>
-        <h2>D3 Combinators</h2>
-      </section>
-
-      <section>
         <h1>Combinators in Underscore</h1>
         <br/>
         <div class="fragment">
@@ -1149,12 +1145,214 @@ user.getName() // can be intercepted/Kay late-bound
         </code></pre>
       </section>
 
-      <section data-markdown ><script type="text/template">
-          # Any other questions?
+<section data-markdown><script type="text/template">
 
-          ### [@timruffles](http://twitter.com/timruffles)
-          ### [@mattfieldy](http://twitter.com/mattfieldy)
-      </script></section>
+## Time in FP
+
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Time is tricky
+
+```javascript
+function updateProfile(req,res) {
+  getUser(res.params.userId,function(err,user) {
+    if(err) return res.send(404);
+    getProfile(user,function(err,profile) {
+      if(err) return res.send(500);
+      updateProfile(user,profile,req.params.profile,function(err) {
+        if(err) return res.send(500);
+      });
+    })
+  })
+}
+```
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+
+## Where are the values?
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## We're really saying
+
+```javascript
+var user = getUser(params["id"]);
+if(!user) return res.send(404);
+
+try {
+  var profile = getProfile(user);
+  if(profile) {
+    update(user,profile,params);
+  } else {
+    profile = create(user,params);
+  }
+  return res.send(profile);
+} catch(e) {
+  res.send(500);
+}
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Like a spread-sheet
+
+- values with inter-relations
+
+```javascript
+var user = getUser(params["id"]);
+var profile = getProfile(user);
+var accountPage = accountPageTemplate(user,profile);
+```
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+
+## How do we get back to values?
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Promises
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## An IOU
+
+- A promise is a value, returned immediately
+- Later fulfilled or rejected - once
+- Can use before or after value arrives
+- Chain promises together
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Intuition
+
+- You promised to give Bethany £10
+- Bethany promised to buy £10 of sweets for Alice
+- Alice now has a promise from Bethany that depends on your promise
+- It's a chain that turns £10 -> £10 of sweets -> happy Alice
+- Just like IOUs - credit notes - they can be passed around and fulfilled later
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+
+## Promises in practice
+
+- `.then()` with a function that accepts the value when it arrives
+- `.then()` returns a new promise - for the return value of the function
+
+```
+var user = getUser(params["id"]);
+var profile = user.then(getProfile);
+var accountPage = Promise.spread(user,profile).then(accountPageTemplate);
+
+accountPage.then(
+  renderToDom,
+  renderErrorMessage
+);
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## In detail
+
+```
+var aTennerLater = new Promise(function(resolve) {
+  setTimeout(function() { resolve(10) },500)
+});
+
+var sweets = aTennerLater.then(function(money) {
+  if(money < 10) throw new Error("Too little money to fulfil!");
+  return { type: "liquorice", value: money };
+});
+
+var alicesMood = sweets.then(function(sweets) {
+  return {
+    mood: "Happy! She got " + sweets.value
+      + " pounds worth of " + sweets.type
+  }
+},function(failureReason) {
+  return {
+    mood: "Grumpy! No sweets because " + failureReason
+  }
+});
+```
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+
+## Can handle multiple dependencies
+
+- Doesn't require nesting - we have values!
+  - we'll be writing spread
+
+```
+var user = getUser(params["id"]);
+var profile = user.then(getProfile);
+var accountPage = Promise.all(user,profile)
+  .then(spread(accountPageTemplate));
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Enumerations
+
+- No library code for maps to promises
+- Still requires library for more interesting enumeration
+
+```
+[fileA,fileB,fileC].map(function(f) {
+  return readFile(f)
+}).map(function(contents) {
+  return contents.then(transform);
+}) // list of promises for transformed content
+```
+
+</script></section>
+
+
+
+<section data-markdown><script type="text/template">
+
+## What's awkward in FP
+
+
+</script></section>
+
+
+<section data-markdown ><script type="text/template">
+    # Any other questions?
+
+    ### [@timruffles](http://twitter.com/timruffles)
+    ### [@mattfieldy](http://twitter.com/mattfieldy)
+</script></section>
+
+
 <section data-markdown ><script type="text/template">
 
 ## Creative commons work
