@@ -7,7 +7,7 @@ describe("promises",function() {
     });
 
     it("resolves successful promises with the first handler",function(check) {
-      var yourAnswer = check.FILL_ME_IN;
+      var yourAnswer = "sweets";
 
       fulfilledWithSweets.then(function(value) {
         check(value,yourAnswer);
@@ -15,7 +15,7 @@ describe("promises",function() {
     }.question());
 
     it("returns a promise to return value of function after resolution",function(check) {
-      var yourAnswer = check.FILL_ME_IN;
+      var yourAnswer = "SWEETS";
 
       fulfilledWithSweets.then(function(value) {
         return value.toUpperCase()
@@ -27,7 +27,7 @@ describe("promises",function() {
 
     
     it("returns a promise to return value of function after resolution - assignment",function(check) {
-      var yourAnswer = check.FILL_ME_IN;
+      var yourAnswer = "sweets-sweets";
 
       var returnValue = fulfilledWithSweets.then(function(value) {
         return value + "-" + value;
@@ -42,27 +42,28 @@ describe("promises",function() {
 
 
     it("an error will mean the promise is rejected",function(check) {
-      var yourAnswer = check.FILL_ME_IN;
+      var yourAnswer = "no sweets please";
 
       fulfilledWithSweets.then(function(value) {
         throw new Error("no sweets please")
-      }).then(null,function(value) {
+      }).then(null,function(rejection) {
+        var value = rejection.message;
         check(value,yourAnswer);
       });
 
     }.question());
 
     it("returning from the error handler creates will resolve the returned promise",function(check) {
-      var yourAnswer = check.FILL_ME_IN;
+      var yourAnswer = "fixed";
 
-      var value = fulfilledWithSweets.then(function(value) {
+      var promise = fulfilledWithSweets.then(function(value) {
         throw new Error("no sweets please")
       }).then(null,function(value) {
-        return { fixed: true, originalProblem: value };
+        return "fixed";
       });
 
-      value.then(function(value) {
-        check(value.originalProblem,yourAnswer);
+      promise.then(function(value) {
+        check(value,yourAnswer);
       });
 
     }.question());
@@ -80,7 +81,7 @@ describe("promises",function() {
       });
 
       it("allows multiple promises to be combined",function(check) {
-        var yourAnswer = check.FILL_ME_IN;
+        var yourAnswer = "toffee-bonbons";
 
         var value = Promise.all([toffee,bonbons]).then(function(results) {
           var combined = results.join("-");
@@ -92,8 +93,8 @@ describe("promises",function() {
       it("rejects if any promises are rejected",function(check) {
 
         var value = Promise.all([toffee,noSweets]).then(
-          check.expectToBeCalledTrueFalse(null),
-          check.expectToBeCalledTrueFalse(null)
+          check.expectToBeCalledTrueFalse(false),
+          check.expectToBeCalledTrueFalse(true)
         );
 
       }.question());
