@@ -400,7 +400,7 @@ user.getName() // can be intercepted/Kay late-bound
 
       <section>
 
-        <pre><code>
+        <pre><code class=javascript>
         function forEach(xs, fn) {
           for (var i = 0; i < xs.length; i++) {
             return fn(xs[i]);
@@ -426,7 +426,7 @@ user.getName() // can be intercepted/Kay late-bound
       <section data-markdown ><script type="text/template">
           #### JavaScript has first-class functions
 
-          <pre><code >
+          <pre><code class=javascript >
               function hello(){
                 return "Hello, world!";
               }
@@ -466,7 +466,7 @@ user.getName() // can be intercepted/Kay late-bound
       <section data-markdown ><script type="text/template">
           * Which is more likely to contain a bug?
           
-          <pre><code>
+          <pre><code class=javascript>
               // Self-contained, six-lines long
               var total = 0, count = 1;
               while (count <= 10) {
@@ -475,7 +475,7 @@ user.getName() // can be intercepted/Kay late-bound
               }
               console.log(total);                
           </code></pre>
-          <pre><code>
+          <pre><code class=javascript>
               // Relies on two external functions, one line long
               console.log(sum(range(1, 10)));
               
@@ -492,7 +492,7 @@ user.getName() // can be intercepted/Kay late-bound
           <li>Specifically, abstraction over <em>actions</em> not just values</li>
         </ul>
 
-        <pre><code >
+        <pre><code class=javascript >
           function unless(test, then){
             if (!test) then();
           }
@@ -593,7 +593,7 @@ user.getName() // can be intercepted/Kay late-bound
       <section>
         <h3>Making Our Own</h3>
 
-        <pre><code >
+        <pre><code class=javascript >
         function getText(el){ return el.innerText }
 
         var links = document.getElementsByClassName('link');
@@ -604,7 +604,7 @@ user.getName() // can be intercepted/Kay late-bound
                 
         <p>Instead of passing a function into `map`, could write a HOF that instead takes a function and turns into a mapping:</p>
 
-      <pre><code >
+      <pre><code class=javascript >
       function splat(fn){
         return function(xs){
           return Array.prototype.map.call(list, fn);
@@ -622,7 +622,7 @@ user.getName() // can be intercepted/Kay late-bound
       <section>
         <p>If we didn't use `splat`, we'd have to write something like this out every time we wanted to construct a function that maps an array to a result:</p>
 
-        <pre><code >
+        <pre><code class=javascript >
           function mapGetText(xs){
             return xs.map(function(x){
               return x.innerText;
@@ -636,7 +636,7 @@ user.getName() // can be intercepted/Kay late-bound
         <br/>
         <p><code>get</code> - takes the name of a property and returns a function 
     that gets that property from an object:</p>
-        <pre><code >
+        <pre><code class=javascript >
             function get(prop){
               return function(object){
                 return object[prop];
@@ -655,7 +655,7 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
 
       <section>
-        <pre><code >
+        <pre><code class=javascript >
         var users = [
           { 'name': 'John',
              'age': 32,
@@ -669,7 +669,7 @@ user.getName() // can be intercepted/Kay late-bound
         ];
         </code></pre>
         <p>Now we can make our earlier <code>splat</code> function work for us:</p>
-        <pre><code >
+        <pre><code class=javascript >
         var firstNames = splat(get('name'))(users);
         //=> ["John", "Wendy", "Sheila"]
 
@@ -682,7 +682,7 @@ user.getName() // can be intercepted/Kay late-bound
       
       <section>
         <p>Such a common pattern that we can take things up another level:</p>
-        <pre><code >
+        <pre><code class=javascript >
         function pluck(prop){
           return splat(get(prop));
         }
@@ -692,7 +692,7 @@ user.getName() // can be intercepted/Kay late-bound
         </code></pre>
         <br/>
         <p>Libraries like Lo-Dash implement this in a slightly different format:</p>
-        <pre><code >
+        <pre><code class=javascript >
         _.pluck(users, 'name');
         //=> ["John", "Wendy", "Sheila"]
         </code></pre>
@@ -763,7 +763,7 @@ user.getName() // can be intercepted/Kay late-bound
             <li>function application</li>
           </ul>
         </ul>
-        <pre><code >
+        <pre><code class=javascript >
             // Abstraction - (&#955;x.x)
             function(x){ return x };
 
@@ -773,7 +773,7 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
         
       <section>
-        <pre><code >
+        <pre><code class=javascript >
           /* Functions that return functions
              :: &#955;x.&#955;y.x + y */
           function(x){
@@ -859,21 +859,21 @@ user.getName() // can be intercepted/Kay late-bound
       <section>
         <h2>And now for something useful</h2>
         <br/>
-        <pre class="fragment"><code>
+        <pre class="fragment"><code class=javascript>
           function splat(fn){
             return function(xs){
               return Array.prototype.map.call(list, fn);
             }
           }
         </code></pre>
-        <pre class="fragment"><code >
+        <pre class="fragment"><code class=javascript >
           function get(prop){
             return function(object){
               return object[prop];
             };
           }
         </code></pre>
-        <pre class="fragment"><code >
+        <pre class="fragment"><code class=javascript >
           function pluck(prop){
             return splat(get(prop));
           } 
@@ -887,7 +887,7 @@ user.getName() // can be intercepted/Kay late-bound
           <li>JavaScript doesn't strongly enforce notion of variables or properties be <em>something</em></li>
           <li>Have to write programs to account for values that may be <em>nothing</em></li>
         </ul>
-        <pre><code >
+        <pre><code class=javascript >
             function isSomething(value){
               return value != null;
             }
@@ -898,7 +898,7 @@ user.getName() // can be intercepted/Kay late-bound
               }
             }
         </code></pre>
-        <pre><code >
+        <pre><code class=javascript >
             var something = isSomething(value) ?
                             justRuns(value) : value;
         </code></pre>
@@ -924,7 +924,7 @@ user.getName() // can be intercepted/Kay late-bound
               }
             }
         </code></pre>
-        <pre><code>
+        <pre><code class=javascript>
             function checkAndRun = maybe(function(val){
               // do something
             }
@@ -933,7 +933,7 @@ user.getName() // can be intercepted/Kay late-bound
 
       <section>
         <h2>Combining <span class="monospace">maybe</span></h2>
-        <pre><code>
+        <pre><code class=javascript>
           function get(prop){
             return function(object){
               return object[prop];
@@ -999,7 +999,7 @@ user.getName() // can be intercepted/Kay late-bound
           <li>Functionally similar to <code>partial</code> but have to supply a context as first argument</li>
           <li>Doesn't lend itself to composition</li>
         </ul>
-        <pre><code>
+        <pre><code class=javascript>
           var addOne = add.bind(this, 1);
 
           addOne(10);
@@ -1024,7 +1024,7 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
 
       <section>
-        <pre><code>
+        <pre><code class=javascript>
           function add(a, b){
             return a + b;
           }
@@ -1063,7 +1063,7 @@ user.getName() // can be intercepted/Kay late-bound
 
       <section>
         <h3>A less-contrived example</h3>
-        <pre><code>
+        <pre><code class=javascript>
           var modulo = curry(function(divisor, dividend){
             return dividend % divisor;
           });
@@ -1084,7 +1084,7 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
 
       <section>
-        <pre><code>
+        <pre><code class=javascript>
           // Another wrapper, this time around
           // the native `filter` method
           var filter = curry(function(f, xs){
@@ -1124,7 +1124,7 @@ user.getName() // can be intercepted/Kay late-bound
 
       <section>
         <h2>Example</h2>
-        <pre><code>
+        <pre><code class=javascript>
       // Chaining
       var sortedPhones = function(users){
         return _.chain(users)
@@ -1249,11 +1249,7 @@ var accountPage = accountPageTemplate(user,profile);
 
 ## Intuition
 
-- You promised to give Bethany £10
-- Bethany promised to buy £10 of sweets for Alice
-- Alice now has a promise from Bethany that depends on your promise
-- It's a chain that turns £10 -> £10 of sweets -> happy Alice
-- Just like IOUs - credit notes - they can be passed around and fulfilled later
+![Promise chain](img/promises.png)
 
 </script></section>
 
@@ -1265,7 +1261,7 @@ var accountPage = accountPageTemplate(user,profile);
 - `.then()` with a function that accepts the value when it arrives
 - `.then()` returns a new promise - for the return value of the function
 
-```
+```javascript
 var user = getUser(params["id"]);
 var profile = user.then(getProfile);
 var accountPage = Promise.spread(user,profile).then(accountPageTemplate);
@@ -1282,7 +1278,7 @@ accountPage.then(
 
 ## In detail
 
-```
+```javascript
 var aTennerLater = new Promise(function(resolve) {
   setTimeout(function() { resolve(10) },500)
 });
@@ -1312,9 +1308,9 @@ var alicesMood = sweets.then(function(sweets) {
 ## Can handle multiple dependencies
 
 - Doesn't require nesting - we have values!
-  - we'll be writing spread
+- we'll be writing spread
 
-```
+```javascript
 var user = getUser(params["id"]);
 var profile = user.then(getProfile);
 var accountPage = Promise.all(user,profile)
@@ -1330,7 +1326,7 @@ var accountPage = Promise.all(user,profile)
 - No library code for maps to promises
 - Still requires library for more interesting enumeration
 
-```
+```javascript
 [fileA,fileB,fileC].map(function(f) {
   return readFile(f)
 }).map(function(contents) {
