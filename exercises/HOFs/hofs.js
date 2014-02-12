@@ -1,5 +1,9 @@
-// Just write standard function expressions in here
-// e.g. function myFunc(){...}
+exports.reject = reject;
+exports.every = every;
+exports.mapValues = mapValues;
+exports.findKey = findKey;
+
+var _ = require("underscore");
 
 function reject(xs, fn){
   var included = [];

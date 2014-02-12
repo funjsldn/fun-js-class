@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git://github.com/funjsldn/fun-js-class.git"
   },
+  "scripts": {
+    "test": "mocha --watch -r exercises/setup.js exercises/*.js exercises/**/*.js"
+  },
   "author": "",
   "license": "BSD-2-Clause",
   "bugs": {
