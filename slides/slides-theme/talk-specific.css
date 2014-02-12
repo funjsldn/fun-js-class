@@ -19,3 +19,15 @@
 .split .reveal h2, .snobs .reveal h2 {
   color: #fff;
 }
+
+.combined body {
+  background: url(../img/captain-planet.jpg);
+  background-size: cover;  
+}
+
+.combined h2 {
+  background-color: white;
+  font-size: 1.6em;
+  text-align: center;
+  padding: 12px 5px;
+}

@@ -567,7 +567,7 @@ var logContext = console.log.bind(console,"Presentation:");
       ## Time for the real deal
       </script></section>
 
-      <section data-markdown ><script type="text/template">
+      <section data-markdown data-state=title><script type="text/template">
           ## Higher-Order Functions
 
           * What are they?
@@ -641,9 +641,12 @@ var logContext = console.log.bind(console,"Presentation:");
           </code></pre>
       </script></section>
 
-      <section data-markdown ><script type="text/template">
+      <section data-markdown><script type="text/template">
           ## Why would you use them?
 
+      </script></section>
+
+      <section data-markdown><script type="text/template">
           > There are two ways of constructing software:
           > make it so simple that there are obviously no
           > deficiencies, or make it so complicated
@@ -653,7 +656,7 @@ var logContext = console.log.bind(console,"Presentation:");
       </script></section>
 
       <section data-markdown ><script type="text/template">
-          * Which is more likely to contain a bug?
+          <p class="center">Which is more likely to contain a bug?</p>
           
           <pre><code class=javascript>
               // Self-contained, six-lines long
@@ -670,16 +673,15 @@ var logContext = console.log.bind(console,"Presentation:");
               
           </code></pre>
 
-          * Program needed to write the second longer than the first, but more likely to be correct
-          * By building a language in which to express problem, then solving in terms of the problem's domain, solution gains clarity
+          <aside class="notes">
+            * Program needed to write the second longer than the first, but more likely to be correct
+            * By building a language in which to express problem, then solving in terms of the problem's domain, solution gains clarity
             * i.e. summing a range of numbers isn't about loops and counters, but ranges and sums
+          </aside>
       </script></section>
 
       <section>
-        <ul>
-          <li>Powerful level of abstraction</li>
-          <li>Specifically, abstraction over <em>actions</em> not just values</li>
-        </ul>
+        <p>Powerful level of abstraction over <em>actions</em> not just values</p>
 
         <pre><code class=javascript >
           function unless(test, then){
@@ -711,8 +713,6 @@ var logContext = console.log.bind(console,"Presentation:");
       <section data-markdown><script type="text/template">
           ## map
 
-          Takes an array of items and applies a function to each item in that array, then returns a *new* array whose items are the result.
-
               function map(xs, fn){
                 var arr = [];
                 for (var i = 0; i < xs.length; i++) {
@@ -725,12 +725,15 @@ var logContext = console.log.bind(console,"Presentation:");
                 return word.toUppercase();
               });
               //=> ["AN", "ARRAY", "OF", "STRINGS"]
+
+
+            <aside class="notes">
+              Takes an array of items and applies a function to each item in that array, then returns a *new* array whose items are the result.
+            </aside>
       </script></section>
 
       <section data-markdown><script type="text/template">
           ## filter
-
-          Takes an array of items and applies a predicate (a function that returns either true or false) to each of them. Returns a list of those items that satisfy the predicate.
 
               function filter(xs, pred){
                 var filtered = [];
@@ -744,14 +747,16 @@ var logContext = console.log.bind(console,"Presentation:");
               filter(["one", 2, 3, "four", "five", 6], function(item){
                 return _.isNumber(item);
               });
-              //=> [2, 3, 6] 
+              //=> [2, 3, 6]
+
+            <aside class="notes">
+              Takes an array of items and applies a predicate (a function that returns either true or false) to each of them. Returns a list of those items that satisfy the predicate.
+            </aside>
           
       </script></section>
 
       <section data-markdown><script type="text/template">
           ## reduce
-
-          Applies a function against an accumulated value and each value of an array, from left-to-right, and reduces down to a single value.
 
               function reduce(xs, fn, initial){
                 var result = initial;
@@ -766,23 +771,23 @@ var logContext = console.log.bind(console,"Presentation:");
               reduce([1,2,3,4,5], add, 0);
               //=> 15
 
+              // Or, a slightly less-contrived example
+
+              function flatten(a, b){ return a.concat(b); }
+
+              reduce([[0, 1], [2, 3], [4, 5]], flatten, []);
+              //=> [0, 1, 2, 3, 4, 5]
+            <aside class="notes">
+              Applies a function against an accumulated value and each value of an array, from left-to-right, and reduces down to a single value.
+            </aside>
       </script></section>
 
-      <section data-markdown><script type="text/template">
-
-      // Or, a slightly less-contrived example
-
-      function flatten(a, b){ return a.concat(b); }
-
-      reduce([[0, 1], [2, 3], [4, 5]], flatten, []);
-      //=> [0, 1, 2, 3, 4, 5]
-              
-      </script></section>
+      <section data-state=title>
+        <h2>Making Our Own</h2>
+      </section>
 
       <section>
-        <h3>Making Our Own</h3>
-
-        <pre><code class=javascript >
+        <pre><code class=javascript>
         function getText(el){ return el.innerText }
 
         var links = document.getElementsByClassName('link');
@@ -791,25 +796,28 @@ var logContext = console.log.bind(console,"Presentation:");
         //=> ["Home", "About", "Blog", "Contact"]
         </code></pre>
                 
-        <p>Instead of passing a function into `map`, could write a HOF that instead takes a function and turns into a mapping:</p>
+        <aside class="notes">
+          Instead of passing a function into `map`, could write a HOF that instead takes a function and turns into a mapping:
+        </aside>
 
-      <pre><code class=javascript >
-      function splat(fn){
-        return function(xs){
-          return Array.prototype.map.call(list, fn);
+      <p>Turn a function into a mapping</p>
+      <pre><code class=javascript>
+        function splat(fn){
+          return function(xs){
+            return Array.prototype.map.call(list, fn);
+          }
         }
-      }
 
-      // Create a new mapping function from `pluck`:
-      var mapGetText = splat(getText);
+        // Create a new mapping function from `pluck`:
+        var mapGetText = splat(getText);
 
-      mapGetText(links);
-      //=> ["Home", "About", "Blog", "Contact"]
+        mapGetText(links);
+        //=> ["Home", "About", "Blog", "Contact"]
       </code></pre>
       </section>
 
       <section>
-        <p>If we didn't use `splat`, we'd have to write something like this out every time we wanted to construct a function that maps an array to a result:</p>
+        <p>If we didn't use <code>splat</code></p>
 
         <pre><code class=javascript >
           function mapGetText(xs){
@@ -818,11 +826,11 @@ var logContext = console.log.bind(console,"Presentation:");
             });
           }
         </pre></code>
+        
       </section>
 
       <section>
         <h3>What about objects?</h3>
-        <br/>
         <p><code>get</code> - takes the name of a property and returns a function 
     that gets that property from an object:</p>
         <pre><code class=javascript >
@@ -887,36 +895,36 @@ var logContext = console.log.bind(console,"Presentation:");
         </code></pre>
       </section>
 
-      <section data-markdown>
+      <section data-markdown data-state=title>
         ## Your turn
 
         ## Implementing Underscore
       </section>
 
-      <section data-markdown>
+      <section data-markdown data-state=title>
         ## Combinators
-        
-        * What are they?
-        * How do they work?
-        * Why would we use them?
       </section>
 
       <section data-markdown>
-        ### Specifically:
+        ### Specifically
         
         > A combinator is a higher-order function that uses only function application
         and previously-defined combinators to define a result from its arguments.
 
-        ### In other words:
+      </section>
+
+      <section data-markdown>
+        ### In other words
 
         > Combinators are pure functions that act on other functions to produce functions.
       </section>
       
-      <section>
-        <h2>Interlude - A Brief History</h2>
+      <section data-markdown data-state=title>
+        ## Interlude - A Brief History
+      </section>
 
-        <h2>1930s</h2>
-        <br/>
+      <section>
+        <h3>1930s</h3>
         <div class="fragment">
           <h3 class="center">Alonzo Church</h3>
           <br/>
@@ -932,7 +940,6 @@ var logContext = console.log.bind(console,"Presentation:");
         <br/>
         <br/>
         <br/>
-        <br/>
         <img src="./img/lambda.png">
         <aside class="notes">
           * Foundations of computer science
@@ -944,7 +951,6 @@ var logContext = console.log.bind(console,"Presentation:");
 
       <section>
         <h2>Lambda Calculus</h2>
-        <br/>
         <ul>
           <li>Formal systems in mathmatical logic and computer science for expression computation using only:</li>
           <ul>
@@ -952,7 +958,7 @@ var logContext = console.log.bind(console,"Presentation:");
             <li>function application</li>
           </ul>
         </ul>
-        <pre><code class=javascript >
+        <pre><code class=javascript>
             // Abstraction - (&#955;x.x)
             function(x){ return x };
 
@@ -979,24 +985,36 @@ var logContext = console.log.bind(console,"Presentation:");
             }
           }
         </code></pre>
-        <br/>
         <h2 class="fragment center">Look familiar?</h2>
-        <br/>
         <p class="fragment center">First-class functions & higher-order functions</p>
       </section>
 
       <section>
         <img src="./img/computation.png" class="" alt="" />
         <aside class="notes">
-          * Example of expressivity: John McCarthy defined an entire prog language
-          in seven of only seven functions and two special forms
-          * Whole of computation described through combination of these nine forms
+          * OO came from the bottom up, FP from the top down
         </aside>
       </section>
 
       <section>
-        <h2 class="center">By our powers combined</h2>
-        <br/>
+        <img src="./img/maxwells-equations.png"/>
+        <aside class="notes">
+          <ul>
+            <li>Example of expressivity: John McCarthy defined an entire prog language in only seven functions and two special forms</li>
+            <li>Whole of computation described through combination of these nine forms</li>
+            <li>Page 13 Lisp 1.5 programmers manual, eval and apply, all that's needed to bootstrap Lisp</li>
+            <li>Alan Kay -> Maxwell's Equations of Software</li>
+            <li>"The whole world of programming in a few lines that I can put my hand over"</li>
+            <li>Lot of our tools do not have this level of clarity or succinctness</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section data-markdown data-state=combined>
+        ## By your powers combined
+      </section>
+      
+      <section>
         <h3 class="center">Haskell Curry</h3>
         <br/>
         <img src="./img/curry.jpg">
@@ -1004,17 +1022,17 @@ var logContext = console.log.bind(console,"Presentation:");
         <br/>
         <h3 class="fragment center">Combinatory logic</h3>
         <aside class="notes">
-          * American mathematician and logician
-          * Variant of the lambda calculus -> combinatory logic
+          <ul>
+            <li>American mathematician and logician</li>
+            <li>Variant of the lambda calculus -> combinatory logic</li>
+          </ul>
+        </aside>
       </section>
 
       <section>
-        <h2>Combinators > abstraction</h2>
-        <br/>
-        <ul>
-          <li>Function abstraction replaced with a set of <em>combinators</em>, primitive
-          functions that contain no bound variables:</li>
-        </ul>
+        <h3>Combinators > abstraction</h3>
+        <p><em>Combinators</em>, primitive
+          functions that contain no bound variables:</p>
         <pre><code class="javascript">
             // Function abstraction
             function(x){ return x };
@@ -1041,13 +1059,12 @@ var logContext = console.log.bind(console,"Presentation:");
       <section>
         <blockquote>If Objects are nouns and Methods are verbs, Combinators are the adverbs of programming.
           <br/>
-          <cite>- JavaScript Allongé, Reg Brathwaite</cite>
+          <cite>- JavaScript Allongé, Reg Braithwaite</cite>
         </blockquote>
       </section>
 
       <section>
-        <h2>And now for something useful</h2>
-        <br/>
+        <h3>Now for something useful</h3>
         <pre class="fragment"><code class=javascript>
           function splat(fn){
             return function(xs){
@@ -1071,11 +1088,6 @@ var logContext = console.log.bind(console,"Presentation:");
 
       <section>
         <h2 class="monospace">maybe</h2>
-        <br/>
-        <ul>
-          <li>JavaScript doesn't strongly enforce notion of variables or properties be <em>something</em></li>
-          <li>Have to write programs to account for values that may be <em>nothing</em></li>
-        </ul>
         <pre><code class=javascript >
             function isSomething(value){
               return value != null;
@@ -1091,11 +1103,16 @@ var logContext = console.log.bind(console,"Presentation:");
             var something = isSomething(value) ?
                             justRuns(value) : value;
         </code></pre>
+        <aside class="notes">
+          <ul>
+            <li>JavaScript doesn't strongly enforce notion of variables or properties be <em>something</em></li>
+            <li>Have to write programs to account for values that may be <em>nothing</em></li>
+          </ul>
+        </aside>
       </section>
 
       <section>
         <h2 class="monospace">maybe</h2>
-        <br/>
         <pre><code class="language-javascript">
             function maybe(fn){
               return function(){
@@ -1114,7 +1131,7 @@ var logContext = console.log.bind(console,"Presentation:");
             }
         </code></pre>
         <pre><code class=javascript>
-            function checkAndRun = maybe(function(val){
+            var checkAndRun = maybe(function(val){
               // do something
             }
         </code></pre>
@@ -1146,25 +1163,21 @@ var logContext = console.log.bind(console,"Presentation:");
         </code></pre>
       </section>
 
+      <section data-markdown data-state=title>
+        ## Combinators in Underscore
+      </section>
+      
       <section>
-        <h1>Combinators in Underscore</h1>
+        <h3>Function Combinators</h3>
         <br/>
-        <div class="fragment">
-          <h3>Function Combinators</h3>
-          <br/>
-          <p class="fragment" style="font-family: monospace;">after, bind, bindAll, bindKey,
-            <span class="fragment highlight-green" data-fragment-index="2">compose</span>,
-            <span class="fragment highlight-green" data-fragment-index="2">curry</span>, debounce, defer, delay, memoize, once,
-            <span class="fragment highlight-green" data-fragment-index="2">partial</span>, partialRight, throttle, wrap</p>
-        </div>
+        <p style="font-family: monospace;">after, bind, bindAll, bindKey,
+          <span class="fragment highlight-green" data-fragment-index="2">compose</span>,
+          <span class="fragment highlight-green" data-fragment-index="2">curry</span>, debounce, defer, delay, memoize, once,
+          <span class="fragment highlight-green" data-fragment-index="2">partial</span>, partialRight, throttle, wrap</p>
       </section>
 
       <section>
         <h2 class="monospace">partial</h2>
-        <br/>
-        <h3>Partial Application</h3>
-        <br/>
-        <p>Partial application prepends any number of arguments to a polyadic function and produces another function that can be called with fewer arguments than the original.</p>
         <pre><code>
           function add(a, b){ return a + b; }
 
@@ -1179,37 +1192,41 @@ var logContext = console.log.bind(console,"Presentation:");
           addOne(10);
           //=> 11
         </code></pre>
+        <aside class="notes">
+          <p>Partial application prepends any number of arguments to a polyadic function and produces another function that can be called with fewer arguments than the original.</p>
+        </aside>
       </section>
 
       <section>
-        <h2 class="monospace">Function.prototype.bind</h2>
-        <br/>
-        <ul>
-          <li>Functionally similar to <code>partial</code> but have to supply a context as first argument</li>
-          <li>Doesn't lend itself to composition</li>
-        </ul>
+        <h2 class="monospace">Function#bind</h2>
+
         <pre><code class=javascript>
           var addOne = add.bind(this, 1);
 
           addOne(10);
           //=> 11
         </code></pre>
+        <aside class="notes">
+          <ul>
+            <li>Functionally similar to <code>partial</code> but have to supply a context as first argument</li>
+            <li>Doesn't lend itself to composition</li>
+          </ul>
       </section>
 
       <section>
-        <h2 class="monospace">curry</h2>
-        <br/>
-        <h3>Currying</h3>
-        <br/>
-        <ul>
-          <li>Process of taking a variadic function and creating another function that:</li>
-          <ol>
-            <li>Takes only a single argument, and</li>
-            <li>Returns another curried function if there are any remaining arguments</li>
-          </ol>
-          <br/>
-          <li>A curried function is one that is composed of nested unary functions that can then be called as a chain.</li>
-        </ul>
+        <h2><span class="monospace">curry</span><em class="fragment">(ing)</em></h2>
+        <h3 class="fragment">Function decomposition</h3>
+        <img class="fragment" src="./img/indian-curry.jpg">
+        <aside class="notes">
+          <ul>
+            <li>Process of taking a variadic function and creating another function that:</li>
+            <ol>
+              <li>Takes only a single argument, and</li>
+              <li>Returns another curried function if there are any remaining arguments</li>
+            </ol>
+            <li>A curried function is one that is composed of nested unary functions that can then be called as a chain.</li>
+          </ul>
+        </aside>
       </section>
 
       <section>
@@ -1243,11 +1260,12 @@ var logContext = console.log.bind(console,"Presentation:");
 
       <section>
         <h2>What's the difference?</h2>
-        <br/>
-        <ul>
-          <li>Example of partial application here uses a function to "bind" variables</li>
-          <li>Currying is the process of converting variadic functions into a form that can be partially-applied simply because of their structure</li>
-        </ul>
+        <aside class="notes">
+          <ul>
+            <li>Example of partial application here uses a function to "bind" variables</li>
+            <li>Currying is the process of converting variadic functions into a form that can be partially-applied simply because of their structure</li>
+          </ul>
+        </aside>
       </section>
 
       <section>
@@ -1296,7 +1314,6 @@ var logContext = console.log.bind(console,"Presentation:");
 
       <section>
         <h2 class="monospace">compose</h2>
-        <br/>
         <h3>Function composition</h3>
         <br/>
         <ul>
@@ -1312,7 +1329,7 @@ var logContext = console.log.bind(console,"Presentation:");
       </section>
 
       <section>
-        <h2>Example</h2>
+        <h3>Example</h3>
         <pre><code class=javascript>
       // Chaining
       var sortedPhones = function(users){
@@ -1339,7 +1356,7 @@ var logContext = console.log.bind(console,"Presentation:");
         </code></pre>
       </section>
 
-<section data-markdown><script type="text/template">
+<section data-markdown data-state=title><script type="text/template">
 
 ## Time in FP
 
@@ -1550,16 +1567,13 @@ var accountPage = Promise.all(user,profile)
 - [split personality, eelsmann](http://www.flickr.com/photos/eelsmann/2516127452/)
 - [scared of change, Doug Brown](http://www.flickr.com/photos/49814332@N04/8003059230/)
 - [snob, Bethany](http://www.flickr.com/photos/bethanyegan/6565582497/)
-
+- [power combined](http://www.flickr.com/photos/kinguday/4540065698/)
 
 </script></section>
 
 
 </div>
 </div>
-
-<script src="js/d3.js"></script>
-<script src="js/diagrams.js"></script>
 
 <!-- reveal -->
 <script src="reveal/lib/js/head.min.js"></script>
