@@ -62,22 +62,17 @@
 </script></section>
 
 <section data-markdown><script type="text/template">
-## Languages
-
-- Lambda calculus
-- Haskell, OCaml, F#
-- Erlang
-- Lisp, Scheme, Clojure
-- Prolog
+## FP has great ideas...
 </script></section>
 
 <section data-markdown><script type="text/template">
-## Ideas
+## ...it's that it's hidden by...
+</script></section>
 
-- Immutability
-- Monads, functors (!?!?!?!)
-- Laziness
-- Referential transparency
+<section data-markdown><script type="text/template">
+## ...the jargon
+
+![category of endofunctors](img/jargon.png)
 </script></section>
 
 <section data-markdown><script type="text/template">
@@ -89,15 +84,7 @@
 </script></section>
 
 <section data-markdown><script type="text/template">
-## Warning: our thinking
-
-- like pornography: "you know it when you see it"?
-</script></section>
-
-<section data-markdown><script type="text/template">
-## Three is a magic number
-
-- always be suspcious of lists of three things
+## Warning: disputed ground
 </script></section>
 
 <section data-markdown><script type="text/template">
@@ -150,7 +137,6 @@ doubleTalk()
 <section data-markdown><script type="text/template">
 ## Higher order functions
 
-- jargon no. 2
 - we can pass functions to functions to functions...
 
 ```javascript
@@ -167,7 +153,7 @@ loop(function() {
 </script></section>
 
 <section data-markdown><script type="text/template">
-## A good indicator for FP code
+## First-class fns are good indicator for FP code
 
 - can't do much in FP without FCFs
 
@@ -178,7 +164,7 @@ loop(function() {
 </script></section>
 
 <section data-markdown><script type="text/template">
-- below code is in a loop
+- below code is in a loop in AngularJS
 - yes this is an extreme example
 
 ```javascript
@@ -238,10 +224,20 @@ function square(x) { return x * x }
 
 <section data-markdown ><script type="text/template">
 
+## Computing is safer
+
+![side effects are avoided in functional programming](img/side-effects.png)
+
+</script></section>
+
+<section data-markdown ><script type="text/template">
+
 ```javascript
+// lots of messy, hard to test asynchronous IO
 $(".showFollowerStats",function() {
   Followers.fetch(user,{
     success: function() {
+      // hiding some really easy computation
       var ids = []; 
       for(var i = 0, len = followers.length; i < len; i++)
         ids.push(followers.id)
@@ -281,13 +277,20 @@ function display() {}
 
 
 <section data-markdown><script type="text/template">
-## Three things:
+## Sniff tests for FP
 
 1. first class functions
 1. scared of change(able variables)
 1. divide 'launch rocket' from 'compute answer'
 
 </script></section>
+
+<section data-markdown><script type="text/template">
+## Three is a magic number
+
+- always be suspcious of lists of three things
+</script></section>
+
 
 <section data-markdown><script type="text/template">
 ## How is FP different?
@@ -311,32 +314,29 @@ function display() {}
 
 Alan Kay
 
-- messaging/late binding
-- hiding of state
 
 </script></section>
 
 <section data-markdown><script type="text/template">
-## OOP in practice
-
-> I'm sorry that I long ago coined the term "objects" for this topic because it gets many people to focus on the lesser idea. The big idea is "messaging"
-
-- class
-- inheritance
-
+## Technical diagram
+- messaging/late binding
+- hiding of state
+![technical diagram of OOP](img/messaging.png)
 </script></section>
-
 
 <section data-markdown><script type="text/template">
 ## Messaging & late-binding
 
-- a component wants something to happen: sends a message
-- another components picks it up, and does it
-- decouples parts of the system
-- polymorphism: receivers are many-shaped
-- Ruby/Objective C are messaging based, JS + Python + Lua can emulate
+- component sends a message
+- another components receives and does... whatever it likes
+- decouples intent from implementation
 
 </script></section>
+
+<section data-markdown><script type="text/template">
+## Late binding achieves polymorphism
+</script></section>
+
 
 <section data-markdown><script type="text/template">
 ## Hiding of state
@@ -370,10 +370,38 @@ user.getName() // can be intercepted/Kay late-bound
 </script></section>
 
 <section data-markdown><script type="text/template">
+## OOP in practice
+
+> I'm sorry that I long ago coined the term "objects" for this topic because it gets many people to focus on the lesser idea. The big idea is "messaging"
+
+- classes, inheritance etc just implementation
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+
+## Hiding data hides it
+
+- data is easy to manipulate via pure functions
+- objects hide data away inside one-off APIs
+
+</script></section>
+
+<section data-markdown><script type="text/template">
 
 ## Means vs Ends
 
-- messaging/late bind and hiding state are means, not design goals
+- messaging/hiding state are means, not design goals
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Ends
+
+- polymorphism: many compatible implementations
+- late-binding: can change implemenation at run-time
 
 </script></section>
 
@@ -850,7 +878,7 @@ user.getName() // can be intercepted/Kay late-bound
       </section>
 
       <section>
-        <blockquote><h2 class="center">If Objects are nouns and Methods are verbs, Combinators are the adverbs of programming.</h2>
+        <blockquote>If Objects are nouns and Methods are verbs, Combinators are the adverbs of programming.
           <br/>
           <cite>- JavaScript Allongé, Reg Brathwaite</cite>
         </blockquote>
