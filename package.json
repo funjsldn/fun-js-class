@@ -4,18 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --watch -r exercises/setup.js exercises/*.js exercises/**/*.js"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/funjsldn/fun-js-class.git"
   },
-  "scripts": {
-    "test": "mocha --watch -r exercises/setup.js exercises/*.js exercises/**/*.js"
-  },
   "author": "",
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/funjsldn/fun-js-class/issues"
+  },
+  "devDependencies": {
+    "chai": "~1.9.0",
+    "es6-promise": "~0.1.1",
+    "underscore": "~1.6.0",
+    "debug": "~0.7.4",
+    "diff": "~1.0.8"
   }
 }
