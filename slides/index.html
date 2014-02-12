@@ -396,6 +396,173 @@ user.getName() // can be intercepted/Kay late-bound
 
 </script></section>
 
+<section data-markdown data-state=title><script type="text/template">
+## Nuts'n'bolts
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Defining functions
+
+```javascript
+var hello = function hello(x) {
+  return "hello " + x;
+};
+
+function greetings(x) {
+  return "greetings " + x;
+}
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## What's the difference?
+
+```javascript
+
+greetings("haskell");
+hello("erlang");
+
+var hello = function hello(x) {
+  return "hello " + x;
+};
+
+function greetings(x) {
+  return "greetings " + x;
+}
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Closure
+
+```javascript
+
+var youCanSeeMe = "hello";
+
+function greetings() {
+  return "greetings " + youCanSeeMe;
+}
+function howdy(youCanSeeMe) {
+  return "howdy " + youCanSeeMe;
+}
+```
+
+</script></section>
+
+
+<section data-markdown><script type="text/template">
+
+## Closures: define-time
+
+- spot the bug
+
+```javascript
+var els = document.querySelectAll("button");
+for(var i = 0, len = els.length; i < len; i++) {
+  els[i].addEventListener("click",function() {
+    console.log("You clicked on the button marked " +
+     els[i].innerText);
+  });
+}
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Let's have arguments
+
+- local variable defined for each function *invocation*
+
+```javascript
+function callMe() {
+  // who needs parameters?
+  console.log("Hello " + arguments[0]);
+}
+callMe("a");
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Call me
+
+- JS's split function/object personality 
+- `Function.pt.call = ƒ(thisArg,arg1,arg2 [,argN])`
+
+```javascript
+function toppyTail() {
+  var head = arguments[0];
+  var tail = [].slice.call(arguments,1);
+  return [head,tail]
+}
+
+toppyTail("a","b","c") // ["a",["b","c"]]
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Apply me
+
+- `Function.pt.apply = ƒ(thisArg,[arg1,arg2 [,argN]])`
+
+```javascript
+function flattenOne(array) {
+  return [].concat.apply([],array);
+}
+
+flattenOne([[1,2,3],4,[5,6],[7,8],9])
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## Bind
+
+- JS's split function/object personality again
+- `Function.pt.bind = ƒ(thisArg,arg1,arg2[,argN]])→ƒ`
+
+```javascript
+var log = console.log.bind(console);
+var logContext = console.log.bind(console,"Presentation:");
+```
+
+</script></section>
+
+<section data-markdown><script type="text/template">
+
+## The core
+
+- Define: expression or declaration
+- Closures to capture
+- Arguments
+- Call, apply
+- Bind
+
+</script></section>
+
+<section data-markdown data-state=title><script type="text/template">
+## Let's use them!
+</script></section>
+
+<section data-markdown><script type="text/template">
+## Exercises
+
+- open folder (Terminal, type `cd ` + drag from finder)
+- `npm install`
+- `npm test`
+- fill in the blanks!
+</script></section>
+
 
       <section data-markdown ><script type="text/template">
           ## Higher-Order Functions
@@ -1362,6 +1529,10 @@ var accountPage = Promise.all(user,profile)
 ## What's awkward in FP
 
 
+</script></section>
+
+<section data-markdown><script type="text/template">
+## p.s you've used a monad
 </script></section>
 
 
