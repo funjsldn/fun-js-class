@@ -1,0 +1,14 @@
+{
+  "name": "fun-js-class",
+  "version": "0.0.0",
+  "dependencies": {
+    "lru-cache": {
+      "version": "2.5.0",
+      "from": "lru-cache@"
+    },
+    "sigmund": {
+      "version": "1.0.0",
+      "from": "sigmund@"
+    }
+  }
+}
